@@ -16,7 +16,9 @@ COPY . .
 # Espone la porta 4200 (default Angular)
 EXPOSE 4200
 
-RUN node_modules/.bin/ng build --prod
+RUN npm run build
 
-RUN node_modules/.bin/ng serve
+RUN npm run start
 
+
+# Avvia l'app
