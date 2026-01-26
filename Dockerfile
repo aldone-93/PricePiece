@@ -16,5 +16,7 @@ COPY . .
 # Espone la porta 4200 (default Angular)
 EXPOSE 4200
 
-# Avvia l'app
-CMD ["npm", "run", "start"]
+RUN node_modules/.bin/ng build --prod
+
+RUN node_modules/.bin/ng serve
+
