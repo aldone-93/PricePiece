@@ -1,0 +1,6 @@
+{
+  "/api/**": {
+    "target": "https://crawlerop.up.railway.apps",
+    "secure": false
+  }
+}

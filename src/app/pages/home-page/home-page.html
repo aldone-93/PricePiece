@@ -1,0 +1,15 @@
+<mat-select [formField]="expansionControl.expansion" placeholder="Select expansion...">
+  @for (option of expansions(); track option.id) {
+    <mat-option [value]="option.id">{{ option.name }}</mat-option>
+  }
+</mat-select>
+
+<div class="o-product-list">
+  @for (product of getProducts.value()?.data; track product.idProduct) {
+    <div class="m-product-card">
+      <div class="a-product-card__details">
+        <h3>{{ product.name }}</h3>
+      </div>
+    </div>
+  }
+</div>
