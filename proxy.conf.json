@@ -1,6 +1,6 @@
 {
   "/api/**": {
-    "target": "https://crawlerop.up.railway.apps",
+    "target": "http://localhost:3000",
     "secure": false
   }
 }

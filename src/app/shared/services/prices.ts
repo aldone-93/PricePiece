@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { PriceResponse } from '../models/prices.model';
+import { PriceResponse, PricesBodyRequest } from '../models/prices.model';
 import { map } from 'rxjs';
 
 @Injectable({
@@ -9,9 +9,11 @@ import { map } from 'rxjs';
 export class Prices {
   readonly httpClient = inject(HttpClient);
 
-  getPrices() {
+  getPrices(body?: PricesBodyRequest) {
     return this.httpClient
-      .get<PriceResponse>('/api/prices')
+      .get<PriceResponse>('/api/prices', {
+        params: { ...body },
+      })
       .pipe(map((res: PriceResponse) => res.data));
   }
 }

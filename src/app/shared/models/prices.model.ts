@@ -17,6 +17,16 @@ export type SinglePrice = {
   idCategory: number;
   avg: number;
   minPriceDelta: number;
+  productsInfo: {
+    cardCode: string;
+    categoryName: string;
+    dateAdded: string;
+    idCategory: string;
+    idExpansion: string;
+    idMetacard: string;
+    idProduct: string;
+    name: string;
+  }[];
 };
 
 export type PriceResponse = {
@@ -29,4 +39,10 @@ export type PriceResponse = {
     hasNext: boolean;
     hasPrev: boolean;
   };
+};
+
+export type PricesBodyRequest = {
+  page?: number;
+  pageSize?: number;
+  idProduct?: number[];
 };

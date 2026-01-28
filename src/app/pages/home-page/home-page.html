@@ -1,14 +1,30 @@
-<mat-select [formField]="expansionControl.expansion" placeholder="Select expansion...">
-  @for (option of expansions(); track option.id) {
-    <mat-option [value]="option.id">{{ option.name }}</mat-option>
-  }
-</mat-select>
+<div class="o-filters">
+  <mat-select [formField]="filtersForm.expansion" placeholder="Select expansion...">
+    @for (option of expansions(); track option.id) {
+      <mat-option [value]="option.id">{{ option.name }}</mat-option>
+    }
+  </mat-select>
+  <fieldset class="example-full-width">
+    <mat-label>Min</mat-label>
+    <input matInput type="number" placeholder="Min price..." [formField]="filtersForm.minPrice" />
+  </fieldset>
+  <fieldset class="example-full-width">
+    <mat-label>Max</mat-label>
+    <input matInput type="number" placeholder="Max price..." [formField]="filtersForm.maxPrice" />
+  </fieldset>
+</div>
 
 <div class="o-product-list">
-  @for (product of getProducts.value()?.data; track product.idProduct) {
+  @for (product of getTopMovers.value(); track product.idProduct) {
     <div class="m-product-card">
       <div class="a-product-card__details">
-        <h3>{{ product.name }}</h3>
+        @let productInfo = product?.productsInfo?.[0];
+        <h4>{{ productInfo?.name }}</h4>
+        <p>id: {{ productInfo?.idProduct }}</p>
+        <p>delta: {{ product.priceDelta }}%</p>
+        <p>avg: {{ product.avg1 }}</p>
+        <p>avg1: {{ product.avg7 }}</p>
+        <p>avg7: {{ product.avg30 }}</p>
       </div>
     </div>
   }
