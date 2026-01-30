@@ -25,7 +25,6 @@ import { CurrencyPipe, DecimalPipe } from '@angular/common';
 })
 export class HomePage {
   private readonly expansionsService = inject(Expansions);
-  private readonly productsService = inject(Products);
   private readonly priceService = inject(Prices);
 
   page = signal(1);
@@ -40,15 +39,6 @@ export class HomePage {
   filtersForm = form(this.filterSignal);
 
   expansions = toSignal(this.expansionsService.getAllExpansions(), { initialValue: [] });
-
-  getProducts = rxResource({
-    params: () => ({
-      page: this.page(),
-      pageSize: this.pageSize,
-      expansion: this.filtersForm.expansion().value(),
-    }),
-    stream: ({ params }) => this.productsService.getProducts(params),
-  });
 
   getTopMovers = rxResource({
     params: () => ({
