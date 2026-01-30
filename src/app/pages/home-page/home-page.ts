@@ -6,11 +6,20 @@ import { Products } from '../../shared/services/products';
 import { form, FormField } from '@angular/forms/signals';
 import { Prices } from '../../shared/services/prices';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { min } from 'rxjs';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-home-page',
-  imports: [MatSelectModule, FormField, MatFormFieldModule],
+  imports: [
+    MatSelectModule,
+    FormField,
+    MatFormFieldModule,
+    MatInputModule,
+    DecimalPipe,
+    CurrencyPipe,
+  ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })
@@ -23,8 +32,9 @@ export class HomePage {
   pageSize = 50;
   filterSignal = signal({
     expansion: 0,
-    minPrice: 0,
+    minPrice: 5,
     maxPrice: '',
+    sort: 'priceDelta',
   });
 
   filtersForm = form(this.filterSignal);
@@ -46,6 +56,8 @@ export class HomePage {
       pageSize: 10,
       minPrice: this.filtersForm.minPrice().value(),
       maxPrice: this.filtersForm.maxPrice().value(),
+      expansion: this.filtersForm.expansion().value(),
+      sort: this.filtersForm.sort().value(),
     }),
     stream: ({ params }) => this.priceService.getPrices(params),
   });

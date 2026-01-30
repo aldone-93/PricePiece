@@ -1,31 +1,40 @@
 <div class="o-filters">
-  <mat-select [formField]="filtersForm.expansion" placeholder="Select expansion...">
-    @for (option of expansions(); track option.id) {
-      <mat-option [value]="option.id">{{ option.name }}</mat-option>
-    }
-  </mat-select>
-  <fieldset class="example-full-width">
+  <mat-form-field>
+    <mat-select [formField]="filtersForm.expansion" placeholder="Select expansion...">
+      @for (option of expansions(); track option.id) {
+        <mat-option [value]="option.id">{{ option.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
     <mat-label>Min</mat-label>
     <input matInput type="number" placeholder="Min price..." [formField]="filtersForm.minPrice" />
-  </fieldset>
-  <fieldset class="example-full-width">
+  </mat-form-field>
+  <mat-form-field>
     <mat-label>Max</mat-label>
     <input matInput type="number" placeholder="Max price..." [formField]="filtersForm.maxPrice" />
-  </fieldset>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Delta</mat-label>
+    <mat-select [formField]="filtersForm.sort" placeholder="Select delta...">
+      <mat-option [value]="'minPriceDelta'"> Variazione prezzo minimo</mat-option>
+      <mat-option [value]="'priceDelta'"> Variazione prezzo medio (con Outlier)</mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
 <div class="o-product-list">
   @for (product of getTopMovers.value(); track product.idProduct) {
     <div class="m-product-card">
-      <div class="a-product-card__details">
-        @let productInfo = product?.productsInfo?.[0];
-        <h4>{{ productInfo?.name }}</h4>
-        <p>id: {{ productInfo?.idProduct }}</p>
-        <p>delta: {{ product.priceDelta }}%</p>
-        <p>avg: {{ product.avg1 }}</p>
-        <p>avg1: {{ product.avg7 }}</p>
-        <p>avg7: {{ product.avg30 }}</p>
-      </div>
+      @let productInfo = product?.productsInfo?.[0];
+      <h4>{{ productInfo?.name }}</h4>
+      <p>id: {{ productInfo?.idProduct }}</p>
+      <p>delta: {{ product.priceDelta | number: '1.0-2' }}%</p>
+      <p>minDelta: {{ product.minPriceDelta | number: '1.0-2' }}%</p>
+      <p>low: {{ product.low | currency }}</p>
+      <p>avg: {{ product.avg1 | currency }}</p>
+      <p>avg1: {{ product.avg7 | currency }}</p>
+      <p>avg7: {{ product.avg30 | currency }}</p>
     </div>
   }
 </div>

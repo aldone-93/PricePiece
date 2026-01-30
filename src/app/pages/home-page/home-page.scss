@@ -7,6 +7,7 @@
   width: 100%;
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
+  padding: 16px 32px;
 }
 @media (max-width: 1200px) {
   .o-product-list {
@@ -22,13 +23,17 @@
 .m-product-card {
   border: 0px solid gainsboro;
   border-radius: 1rem;
-  padding: 8px 0 8px 16px;
+  padding: 16px 0 8px 16px;
   box-shadow: 2px 7px 7px 0px gainsboro;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
 .o-filters {
   padding: 16px 24px;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: repeat(4, auto);
   box-shadow: 4px 2px 4px gainsboro;
+  gap: 16px;
 }
