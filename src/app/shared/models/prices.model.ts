@@ -17,16 +17,18 @@ export type SinglePrice = {
   idCategory: number;
   avg: number;
   minPriceDelta: number;
-  productsInfo: {
-    cardCode: string;
-    categoryName: string;
-    dateAdded: string;
-    idCategory: string;
-    idExpansion: string;
-    idMetacard: string;
-    idProduct: string;
-    name: string;
-  }[];
+  productsInfo: productInfo[];
+};
+
+export type productInfo = {
+  cardCode: string;
+  categoryName: string;
+  dateAdded: string;
+  idCategory: string;
+  idExpansion: string;
+  idMetacard: string;
+  idProduct: number;
+  name: string;
 };
 
 export type PriceResponse = {
@@ -44,5 +46,5 @@ export type PriceResponse = {
 export type PricesBodyRequest = {
   page?: number;
   pageSize?: number;
-  idProduct?: number[];
+  idProduct?: number;
 };

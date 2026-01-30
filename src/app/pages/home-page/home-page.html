@@ -22,7 +22,6 @@
     </mat-select>
   </mat-form-field>
 </div>
-
 <div class="o-product-list">
   @for (product of getTopMovers.value(); track product.idProduct) {
     <div class="m-product-card">
@@ -35,6 +34,19 @@
       <p>avg: {{ product.avg1 | currency }}</p>
       <p>avg1: {{ product.avg7 | currency }}</p>
       <p>avg7: {{ product.avg30 | currency }}</p>
+      <button
+        matButton="tonal"
+        commandfor="singleProductDialog"
+        command="show-popover"
+        (click)="selectedProduct.set(productInfo)"
+      >
+        Details
+      </button>
     </div>
   }
 </div>
+<app-single-product-dialog
+  id="singleProductDialog"
+  popover
+  [product]="selectedProduct()"
+></app-single-product-dialog>

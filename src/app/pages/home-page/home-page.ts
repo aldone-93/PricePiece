@@ -9,6 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { min } from 'rxjs';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { SingleProductDialog } from './single-product-dialog/single-product-dialog';
+import { CardInfo } from '../../shared/models/products.model';
+import { productInfo } from '../../shared/models/prices.model';
 
 @Component({
   selector: 'app-home-page',
@@ -19,6 +23,8 @@ import { CurrencyPipe, DecimalPipe } from '@angular/common';
     MatInputModule,
     DecimalPipe,
     CurrencyPipe,
+    MatButtonModule,
+    SingleProductDialog,
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
@@ -26,6 +32,8 @@ import { CurrencyPipe, DecimalPipe } from '@angular/common';
 export class HomePage {
   private readonly expansionsService = inject(Expansions);
   private readonly priceService = inject(Prices);
+
+  selectedProduct = signal<productInfo | undefined>(undefined);
 
   page = signal(1);
   pageSize = 50;

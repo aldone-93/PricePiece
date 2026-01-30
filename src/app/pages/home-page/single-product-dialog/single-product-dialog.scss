@@ -1,0 +1,16 @@
+:host {
+  position: fixed;
+  margin: auto;
+  border: 0;
+  box-shadow: 2px 2px gainsboro;
+  border-radius: 1em;
+  padding: 32px;
+}
+.o-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.o-header {
+  margin-bottom: 24px;
+}
