@@ -38,6 +38,7 @@
         matButton="tonal"
         commandfor="singleProductDialog"
         command="show-popover"
+        (touchstart)="selectedProduct.set(productInfo)"
         (click)="selectedProduct.set(productInfo)"
       >
         Details
