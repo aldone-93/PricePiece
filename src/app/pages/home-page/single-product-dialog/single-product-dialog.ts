@@ -33,11 +33,17 @@ export class SingleProductDialog {
   );
 
   getPricesHistory = rxResource({
-    params: () => ({
-      page: this.page(),
-      pageSize: 10,
-      idProduct: this.product()?.idProduct,
-    }),
+    params: () => {
+      const idProduct = this.product()?.idProduct;
+      if (idProduct === undefined) {
+        return undefined;
+      }
+      return {
+        page: this.page(),
+        pageSize: 10,
+        ...(idProduct !== undefined && { idProduct }),
+      };
+    },
     stream: ({ params }) => this.priceService.getPricesHistory(params),
   });
 

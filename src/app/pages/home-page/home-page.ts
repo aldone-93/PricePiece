@@ -54,8 +54,10 @@ export class HomePage {
       pageSize: 10,
       minPrice: this.filtersForm.minPrice().value(),
       maxPrice: this.filtersForm.maxPrice().value(),
-      expansion: this.filtersForm.expansion().value(),
       sort: this.filtersForm.sort().value(),
+      ...(this.filtersForm.expansion().value() !== 0 && {
+        expansion: this.filtersForm.expansion().value(),
+      }),
     }),
     stream: ({ params }) => this.priceService.getPrices(params),
   });

@@ -12,7 +12,7 @@ export class Expansions {
 
   getAllExpansions() {
     return this.httpClient
-      .get<GetExpansions>(environment.API_URL + 'api/expansions')
+      .get<GetExpansions>(environment.API_URL + 'expansions')
       .pipe(map((response) => response.expansions as ExpansionBooster[]));
   }
 }

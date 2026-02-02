@@ -20,7 +20,7 @@ export class Prices {
     }
 
     return this.httpClient
-      .get<PriceResponse>(`${environment.API_URL}api/prices/${body.idProduct}`, {
+      .get<PriceResponse>(`${environment.API_URL}prices/${body.idProduct}`, {
         params: { ...body },
       })
       .pipe(
@@ -38,7 +38,7 @@ export class Prices {
     }
 
     return this.httpClient
-      .get<PriceResponse>(`${environment.API_URL}api/prices`, {
+      .get<PriceResponse>(`${environment.API_URL}prices`, {
         params: { ...body },
       })
       .pipe(
