@@ -3,6 +3,7 @@ import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { PriceResponse, PricesBodyRequest } from '../models/prices.model';
 import { catchError, map, of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class Prices {
     }
 
     return this.httpClient
-      .get<PriceResponse>(`/api/prices/${body.idProduct}`, {
+      .get<PriceResponse>(`${environment.API_URL}/api/prices/${body.idProduct}`, {
         params: { ...body },
       })
       .pipe(
@@ -37,7 +38,7 @@ export class Prices {
     }
 
     return this.httpClient
-      .get<PriceResponse>('/api/prices', {
+      .get<PriceResponse>(`${environment.API_URL}/api/prices`, {
         params: { ...body },
       })
       .pipe(
