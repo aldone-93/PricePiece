@@ -13,6 +13,11 @@ export class Prices {
   private readonly platformId = inject(PLATFORM_ID);
 
   getPricesHistory(body: PricesBodyRequest) {
+    if (!isPlatformBrowser(this.platformId)) {
+      // Evita la chiamata HTTP durante il prerendering
+      return of([]);
+    }
+
     return this.httpClient
       .get<PriceResponse>(`/api/prices/${body.idProduct}`, {
         params: { ...body },
