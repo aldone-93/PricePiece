@@ -25,6 +25,8 @@ export type productInfo = {
   categoryName: string;
   dateAdded: string;
   idCategory: string;
+  cardtrader_url: string;
+  ctrader_id: string;
   idExpansion: string;
   idMetacard: string;
   idProduct: number;

@@ -26,14 +26,34 @@
   @for (product of getTopMovers.value(); track product.idProduct) {
     <div class="m-product-card">
       @let productInfo = product?.productsInfo?.[0];
-      <h4>{{ productInfo?.name }}</h4>
-      <p>id: {{ productInfo?.idProduct }}</p>
-      <p>delta: {{ product.priceDelta | number: '1.0-2' }}%</p>
-      <p>minDelta: {{ product.minPriceDelta | number: '1.0-2' }}%</p>
-      <p>low: {{ product.low | currency }}</p>
-      <p>avg: {{ product.avg1 | currency }}</p>
-      <p>avg1: {{ product.avg7 | currency }}</p>
-      <p>avg7: {{ product.avg30 | currency }}</p>
+      <div>
+        <h4>{{ productInfo?.name }}</h4>
+        <img
+          src="https://res.cloudinary.com/dntnvwjka/image/upload/{{
+            productInfo?.ctrader_id
+          }}_SMALL.jpg"
+          alt="{{ productInfo?.name }}"
+        />
+      </div>
+      <div>
+        <a href="{{ productInfo?.cardtrader_url }}" target="_blank">View on CardTrader</a>
+        <p>
+          <a
+            href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{
+              productInfo?.idProduct
+            }}"
+            target="_top"
+            >View on Cardmasrket</a
+          >
+        </p>
+        <p>id: {{ productInfo?.idProduct }}</p>
+        <p>delta: {{ product.priceDelta | number: '1.0-2' }}%</p>
+        <p>minDelta: {{ product.minPriceDelta | number: '1.0-2' }}%</p>
+        <p>low: {{ product.low | currency }}</p>
+        <p>avg: {{ product.avg1 | currency }}</p>
+        <p>avg1: {{ product.avg7 | currency }}</p>
+        <p>avg7: {{ product.avg30 | currency }}</p>
+      </div>
       <button
         matButton="tonal"
         commandfor="singleProductDialog"
