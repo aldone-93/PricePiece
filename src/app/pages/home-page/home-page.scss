@@ -3,11 +3,10 @@
 }
 
 .o-product-list {
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  overflow: auto;
+  white-space: nowrap;
   gap: 18px;
-  padding: 16px 32px;
 }
 @media (max-width: 1200px) {
   .o-product-list {
@@ -20,14 +19,38 @@
   }
 }
 
-.m-product-card {
-  border: 0px solid gainsboro;
-  border-radius: 1rem;
-  padding: 16px 0 8px 16px;
-  box-shadow: 2px 7px 7px 0px gainsboro;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.o-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
+}
+.a-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  a {
+    display: flex;
+    gap: 4px;
+  }
+}
+.m-cardInfo {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-columns: 3fr 1fr;
+  gap: 8px;
+}
+
+.m-product-card {
+  min-width: 200px;
+  border-radius: 1rem;
+  height: min-content;
+  padding: 16px;
+  background: var(--bg-secondary);
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
 }
 
 .o-filters {

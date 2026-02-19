@@ -14,7 +14,7 @@ const CHARTS = ['low', 'avg', 'avg7', 'trend'];
   styleUrl: './single-product-dialog.scss',
 })
 export class SingleProductDialog {
-  product = input.required<productInfo | undefined>();
+  product = input.required<CardInfo | undefined>();
   priceService = inject(Prices);
 
   private charts: { [key: string]: Chart } = {};

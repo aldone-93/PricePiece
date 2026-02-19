@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { SingleProductDialog } from './single-product-dialog/single-product-dialog';
 import { CardInfo } from '../../shared/models/products.model';
 import { productInfo } from '../../shared/models/prices.model';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home-page',
@@ -24,6 +25,7 @@ import { productInfo } from '../../shared/models/prices.model';
     DecimalPipe,
     CurrencyPipe,
     MatButtonModule,
+    MatIconModule,
     SingleProductDialog,
   ],
   templateUrl: './home-page.html',
@@ -31,9 +33,9 @@ import { productInfo } from '../../shared/models/prices.model';
 })
 export class HomePage {
   private readonly expansionsService = inject(Expansions);
-  private readonly priceService = inject(Prices);
+  private readonly productService = inject(Products);
 
-  selectedProduct = signal<productInfo | undefined>(undefined);
+  selectedProduct = signal<CardInfo | undefined>(undefined);
 
   page = signal(1);
   pageSize = 50;
@@ -41,7 +43,7 @@ export class HomePage {
     expansion: 0,
     minPrice: 5,
     maxPrice: '',
-    sort: 'priceDelta',
+    sort: 'minEuDiff',
   });
 
   filtersForm = form(this.filterSignal);
@@ -59,6 +61,14 @@ export class HomePage {
         expansion: this.filtersForm.expansion().value(),
       }),
     }),
-    stream: ({ params }) => this.priceService.getPrices(params),
+    stream: ({ params }) => this.productService.getProducts(params),
+  });
+
+  getTopMoversSet = rxResource({
+    params: () => ({
+      page: this.page(),
+      pageSize: this.pageSize,
+    }),
+    stream: ({ params }) => this.productService.getExpansionsSummary(),
   });
 }

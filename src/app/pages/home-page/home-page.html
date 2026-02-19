@@ -17,57 +17,77 @@
   <mat-form-field>
     <mat-label>Delta</mat-label>
     <mat-select [formField]="filtersForm.sort" placeholder="Select delta...">
-      <mat-option [value]="'minPriceDelta'"> Variazione prezzo minimo</mat-option>
-      <mat-option [value]="'priceDelta'"> Variazione prezzo medio (con Outlier)</mat-option>
+      <mat-option [value]="'minEuDiff'"> Variazione prezzo minimo</mat-option>
+      <mat-option [value]="'minEu'"> Prezzo</mat-option>
     </mat-select>
   </mat-form-field>
 </div>
-<div class="o-product-list">
-  @for (product of getTopMovers.value(); track product.idProduct) {
-    <div class="m-product-card">
-      @let productInfo = product?.productsInfo?.[0];
-      <div>
-        <h4>{{ productInfo?.name }}</h4>
+<div class="o-content">
+  <h2>Singles Top Movers</h2>
+  <div class="o-product-list">
+    @for (product of getTopMovers.value(); track product.idProduct) {
+      <div class="m-product-card">
+        <h4>{{ product?.name }}</h4>
         <img
           src="https://res.cloudinary.com/dntnvwjka/image/upload/{{
-            productInfo?.ctrader_id
+            product?.ctrader_id
           }}_SMALL.jpg"
-          alt="{{ productInfo?.name }}"
+          alt="{{ product?.name }}"
         />
+        <div class="m-cardInfo">
+          <div class="a-priceInfo">
+            <p>delta: {{ product.minEuDiff | number: '1.0-2' }}%</p>
+            <p>🇮🇹: {{ product.minIta | currency }}</p>
+            <p>🇪🇺: {{ product.minEu | currency }}</p>
+          </div>
+
+          <div class="a-links">
+            <a href="{{ product?.cardtrader_url }}" target="_blank"> CardTrader </a>
+            <a
+              href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{
+                product?.idProduct
+              }}"
+              target="_blank"
+              >CardMarket
+            </a>
+          </div>
+        </div>
+        <button
+          matButton="filled"
+          commandfor="singleProductDialog"
+          command="show-popover"
+          (touchstart)="selectedProduct.set(product)"
+          (click)="selectedProduct.set(product)"
+        >
+          Details
+        </button>
       </div>
-      <div>
-        <a href="{{ productInfo?.cardtrader_url }}" target="_blank">View on CardTrader</a>
-        <p>
-          <a
-            href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{
-              productInfo?.idProduct
-            }}"
-            target="_top"
-            >View on Cardmasrket</a
-          >
-        </p>
-        <p>id: {{ productInfo?.idProduct }}</p>
-        <p>delta: {{ product.priceDelta | number: '1.0-2' }}%</p>
-        <p>minDelta: {{ product.minPriceDelta | number: '1.0-2' }}%</p>
-        <p>low: {{ product.low | currency }}</p>
-        <p>avg: {{ product.avg1 | currency }}</p>
-        <p>avg1: {{ product.avg7 | currency }}</p>
-        <p>avg7: {{ product.avg30 | currency }}</p>
+    }
+  </div>
+
+  <h2>Set movers</h2>
+
+  <div class="o-product-list">
+    @for (set of getTopMoversSet.value(); track set.idSet) {
+      <div class="m-product-card">
+        <h4>{{ set?.expansionName }}</h4>
+        <img
+          src="https://res.cloudinary.com/dntnvwjka/image/upload/{{ set?.ctrader_id }}_SMALL.jpg"
+          alt="{{ set?.expansionName }}"
+        />
+        <div class="m-cardInfo a-priceInfo">
+          <p>delta: {{ set.priceDiffPercent | number: '1.0-2' }}%</p>
+          <p>total: {{ set.totalPrice | currency }}</p>
+          <p>🇪🇺: {{ set.eu | currency }}</p>
+        </div>
       </div>
-      <button
-        matButton="tonal"
-        commandfor="singleProductDialog"
-        command="show-popover"
-        (touchstart)="selectedProduct.set(productInfo)"
-        (click)="selectedProduct.set(productInfo)"
-      >
-        Details
-      </button>
-    </div>
+    }
+  </div>
+  @if (selectedProduct()) {
+    <app-single-product-dialog
+      id="singleProductDialog"
+      popover
+      [product]="selectedProduct()"
+    ></app-single-product-dialog>
   }
 </div>
-<app-single-product-dialog
-  id="singleProductDialog"
-  popover
-  [product]="selectedProduct()"
-></app-single-product-dialog>
