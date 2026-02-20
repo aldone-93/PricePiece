@@ -8,12 +8,13 @@ import { Prices } from '../../shared/services/prices';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { min } from 'rxjs';
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DecimalPipe, NgClass } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { SingleProductDialog } from './single-product-dialog/single-product-dialog';
 import { CardInfo } from '../../shared/models/products.model';
 import { productInfo } from '../../shared/models/prices.model';
 import { MatIconModule } from '@angular/material/icon';
+import { ProductCard } from './components/product-card/product-card';
 
 @Component({
   selector: 'app-home-page',
@@ -27,6 +28,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatIconModule,
     SingleProductDialog,
+    ProductCard,
+    NgClass,
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
@@ -43,6 +46,7 @@ export class HomePage {
     expansion: 0,
     minPrice: 5,
     maxPrice: '',
+    name: '',
     sort: 'minEuDiff',
   });
 
@@ -54,9 +58,26 @@ export class HomePage {
     params: () => ({
       page: this.page(),
       pageSize: 10,
+      name: this.filtersForm.name().value(),
       minPrice: this.filtersForm.minPrice().value(),
       maxPrice: this.filtersForm.maxPrice().value(),
       sort: this.filtersForm.sort().value(),
+      ...(this.filtersForm.expansion().value() !== 0 && {
+        expansion: this.filtersForm.expansion().value(),
+      }),
+    }),
+    stream: ({ params }) => this.productService.getProducts(params),
+  });
+
+  getTopLosers = rxResource({
+    params: () => ({
+      page: this.page(),
+      pageSize: 10,
+      name: this.filtersForm.name().value(),
+      minPrice: this.filtersForm.minPrice().value(),
+      maxPrice: this.filtersForm.maxPrice().value(),
+      sort: 'minEuDiff',
+      sortOrder: 'asc',
       ...(this.filtersForm.expansion().value() !== 0 && {
         expansion: this.filtersForm.expansion().value(),
       }),

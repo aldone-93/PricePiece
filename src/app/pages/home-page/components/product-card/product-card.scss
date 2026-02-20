@@ -1,38 +1,3 @@
-:host {
-  padding: 24px;
-}
-
-.o-product-list {
-  display: flex;
-  overflow: auto;
-  white-space: nowrap;
-  gap: 18px;
-}
-@media (max-width: 1200px) {
-  .o-product-list {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-@media (max-width: 800px) {
-  .o-product-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.o-content {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.o-filters {
-  padding: 16px 24px;
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  box-shadow: 4px 2px 4px gainsboro;
-  gap: 16px;
-}
 .m-cardInfo {
   display: grid;
   grid-template-columns: auto auto;
@@ -49,7 +14,7 @@
   display: flex;
   gap: 16px;
   flex-direction: column;
-  flex: none;
+
   h4 {
     overflow: hidden;
     white-space: nowrap;
