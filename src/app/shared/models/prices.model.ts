@@ -49,4 +49,5 @@ export type PricesBodyRequest = {
   page?: number;
   pageSize?: number;
   idProduct?: number;
+  name?: string;
 };

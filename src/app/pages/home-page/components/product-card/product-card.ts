@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-product-card',
@@ -13,5 +13,11 @@ export class ProductCard {
   diff = input.required<number>();
   minIta = input<number>();
   minEu = input<number>();
-  cardtrader_url = input<string>();
+  ctrader_id = input<number>();
+
+  cardClick = output<void>();
+
+  onCardClick() {
+    this.cardClick.emit();
+  }
 }

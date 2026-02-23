@@ -1,4 +1,4 @@
-<div class="m-product-card">
+<div class="m-product-card" (click)="onCardClick()">
   <h4>{{ name() }}</h4>
   <img
     src="https://res.cloudinary.com/dntnvwjka/image/upload/{{ id() }}_SMALL.jpg"
@@ -7,17 +7,29 @@
   <div class="m-cardInfo">
     <div class="a-priceInfo">
       @let sign = diff() !== 0 ? (diff() >= 0 ? 'positive' : 'negative') : '';
-      <a href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{ id() }}" target="_blank"
+      <a
+        href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{ id() }}"
+        target="_blank"
+        (click)="$event.stopPropagation()"
         >🇮🇹: {{ minIta() | currency }}</a
       >
-      <a href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{ id() }}" target="_blank"
+      <a
+        href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{ id() }}"
+        target="_blank"
+        (click)="$event.stopPropagation()"
         >🇪🇺: {{ minEu() | currency }}</a
       >
     </div>
 
     <div class="a-links">
       <p [ngClass]="sign">{{ diff() | number: '1.0-2' }}%</p>
-      <a href="{{ cardtrader_url }}" target="_blank"> CardTrader </a>
+      <a
+        href="https://www.cardtrader.com/en/cards/{{ ctrader_id() }}"
+        target="_blank"
+        (click)="$event.stopPropagation()"
+      >
+        CardTrader
+      </a>
     </div>
   </div>
 </div>

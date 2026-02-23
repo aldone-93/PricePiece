@@ -7,6 +7,7 @@
   overflow: auto;
   white-space: nowrap;
   gap: 18px;
+  min-height: 350px; /* Altezza fissa per evitare il flick */
 }
 @media (max-width: 1200px) {
   .o-product-list {

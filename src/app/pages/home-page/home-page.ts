@@ -15,6 +15,7 @@ import { CardInfo } from '../../shared/models/products.model';
 import { productInfo } from '../../shared/models/prices.model';
 import { MatIconModule } from '@angular/material/icon';
 import { ProductCard } from './components/product-card/product-card';
+import { SkeletonProducts } from './components/skeleton-products/skeleton-products';
 
 @Component({
   selector: 'app-home-page',
@@ -30,6 +31,7 @@ import { ProductCard } from './components/product-card/product-card';
     SingleProductDialog,
     ProductCard,
     NgClass,
+    SkeletonProducts,
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
@@ -92,4 +94,13 @@ export class HomePage {
     }),
     stream: ({ params }) => this.productService.getExpansionsSummary(),
   });
+
+  openSingleProductDialog(product: CardInfo) {
+    this.selectedProduct.set(product);
+
+    const popover = document.getElementById('singleProductDialog') as any;
+    if (popover && popover.showPopover) {
+      popover.showPopover();
+    }
+  }
 }

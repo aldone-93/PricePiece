@@ -15,6 +15,7 @@ export type CardInfo = {
   idMetacard: number;
   name: string;
   minEu: number;
+  cardCode: string;
   minIta: number;
   minEuDiff: number;
   minItaDiff: number;

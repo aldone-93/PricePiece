@@ -4,7 +4,7 @@ import { Prices } from '../../../shared/services/prices';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import Chart from 'chart.js/auto';
 import { CardInfo } from '../../../shared/models/products.model';
-import { productInfo } from '../../../shared/models/prices.model';
+import { Variants } from '../../../shared/services/variants';
 
 const CHARTS = ['low', 'avg', 'avg7', 'trend'];
 @Component({
@@ -16,7 +16,7 @@ const CHARTS = ['low', 'avg', 'avg7', 'trend'];
 export class SingleProductDialog {
   product = input.required<CardInfo | undefined>();
   priceService = inject(Prices);
-
+  variantsService = inject(Variants);
   private charts: { [key: string]: Chart } = {};
   page = signal(1);
 
@@ -68,6 +68,19 @@ export class SingleProductDialog {
       }
     });
   }
+
+  getVariants = rxResource({
+    params: () => {
+      const name = this.product()?.cardCode;
+      if (name === undefined) {
+        return undefined;
+      }
+      return {
+        ...(name !== undefined && { name }),
+      };
+    },
+    stream: ({ params }) => this.variantsService.getVariants(params),
+  });
 
   updateChart(key: string, data: number[]) {
     const chart = this.charts[key];

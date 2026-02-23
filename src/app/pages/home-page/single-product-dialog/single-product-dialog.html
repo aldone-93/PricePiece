@@ -1,6 +1,10 @@
 <div class="o-header">
   <h2>{{ product()?.name }}</h2>
 </div>
+<img
+  src="https://res.cloudinary.com/dntnvwjka/image/upload/{{ product()?.idProduct }}_SMALL.jpg"
+  alt="{{ product()?.name }}"
+/>
 <div class="o-charts">
   <div>
     <p>Prezzo minimo</p>
@@ -18,4 +22,28 @@
     <p>Tendenza(previsione futura)</p>
     <canvas id="trend"></canvas>
   </div>
+</div>
+
+<div class="m-variants">
+  @for (variant of getVariants.value(); track variant.idProduct) {
+    <div class="m-variant-card">
+      <h4>{{ variant.name }}</h4>
+      <img
+        src="https://res.cloudinary.com/dntnvwjka/image/upload/{{ variant.idProduct }}_SMALL.jpg"
+        alt="{{ variant.name }}"
+      />
+      <div class="m-cardInfo a-priceInfo">
+        <a
+          href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{ variant.idProduct }}"
+          target="_blank"
+          >🇮🇹: {{ variant.minIta | currency }}</a
+        >
+        <a
+          href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{ variant.idProduct }}"
+          target="_blank"
+          >🇪🇺: {{ variant.minEu | currency }}</a
+        >
+      </div>
+    </div>
+  }
 </div>
