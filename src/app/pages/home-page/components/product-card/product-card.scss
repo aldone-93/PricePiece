@@ -34,14 +34,56 @@
   color: var(--text-primary);
 }
 
-a {
-  display: flex;
-  gap: 4px;
-  color: var(--text-primary);
-}
 p.positive {
   color: var(--accent-green);
 }
 p.negative {
   color: var(--accent-red);
+}
+
+.m-priceInfo {
+  position: absolute;
+  background: #000000ad;
+  text-decoration: none;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 0.5rem;
+  align-items: center;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    padding-right: 8px;
+
+    .a-cmLogo {
+      transform: translateX(0);
+      opacity: 1;
+      width: 16px;
+    }
+  }
+
+  a {
+    display: flex;
+    gap: 4px;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+}
+.o-cardImage {
+  position: relative;
+}
+a {
+  display: flex;
+  gap: 4px;
+  color: var(--text-primary);
+}
+
+.a-cmLogo {
+  width: 0px;
+  transform: translateX(-20px);
+  opacity: 0;
+  transition: all 0.3s ease;
 }
