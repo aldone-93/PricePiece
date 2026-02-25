@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, model, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Prices } from '../../../shared/services/prices';
 import { CurrencyPipe, DatePipe } from '@angular/common';
@@ -20,9 +20,14 @@ export class SingleProductDialog {
   priceService = inject(Prices);
   variantsService = inject(Variants);
   productService = inject(Products);
+  closeOutput = output<void>();
   private chart: Chart | undefined = undefined;
   page = signal(1);
   loadedImages = signal<Set<string>>(new Set());
+
+  closeDialog() {
+    this.closeOutput.emit();
+  }
 
   onImageLoad(idProduct: string) {
     this.loadedImages.update((set) => {

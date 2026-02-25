@@ -89,5 +89,6 @@
     id="singleProductDialog"
     popover
     [product]="selectedProduct()"
+    (closeOutput)="selectedProduct.set(undefined)"
   ></app-single-product-dialog>
 }

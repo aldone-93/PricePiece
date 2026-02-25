@@ -9,8 +9,42 @@
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }
+
 a {
   color: var(--text-primary);
+}
+
+.a-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    background: var(--accent-purple);
+    color: white;
+    transform: rotate(90deg);
+  }
+
+  &:active {
+    transform: rotate(90deg) scale(0.95);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .o-content {
@@ -170,4 +204,149 @@ a {
   padding: 40px;
   color: var(--text-secondary);
   font-style: italic;
+}
+
+/* Media Queries per Mobile */
+@media (max-width: 1024px) {
+  :host {
+    width: 80%;
+    padding: 24px;
+  }
+
+  .o-content {
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+  }
+
+  .m-info {
+    grid-template-columns: 1fr;
+
+    img {
+      width: 200px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    width: 95%;
+    height: 95%;
+    padding: 16px;
+    border-radius: 0.5em;
+  }
+
+  .o-header {
+    margin-bottom: 16px;
+
+    h2 {
+      font-size: 1.25rem;
+    }
+
+    a {
+      font-size: 0.875rem;
+    }
+  }
+
+  .o-content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    img {
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+
+  .m-info {
+    grid-template-columns: 1fr;
+    padding: 4px;
+    gap: 12px;
+  }
+
+  .m-variants {
+    max-width: 100%;
+    gap: 12px;
+  }
+
+  .m-variant-card {
+    .image-container {
+      height: 160px;
+      width: 116px;
+
+      img {
+        height: 160px;
+      }
+    }
+  }
+
+  .skeleton-image {
+    height: 160px;
+    width: 116px;
+  }
+
+  .m-rulings {
+    padding: 12px;
+    max-height: 300px;
+  }
+
+  .m-ruling-item {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .m-question,
+  .m-answer {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    padding: 12px;
+  }
+
+  .o-header {
+    h2 {
+      font-size: 1.1rem;
+    }
+  }
+
+  .o-content {
+    img {
+      max-width: 250px;
+    }
+  }
+
+  .m-variant-card {
+    .image-container {
+      height: 140px;
+      width: 101px;
+
+      img {
+        height: 140px;
+      }
+    }
+  }
+
+  .skeleton-image {
+    height: 140px;
+    width: 101px;
+  }
+
+  .m-variants {
+    gap: 8px;
+  }
+
+  .m-rulings {
+    padding: 8px;
+  }
+
+  .m-ruling-item {
+    padding: 8px;
+  }
 }
