@@ -34,8 +34,12 @@
     background-color: rgb(220, 38, 38);
   }
   &.yellow {
-    background-color: rgb(234, 179, 8);
+    background-color: #ffff32;
     color: rgb(0, 0, 0);
+    font-weight: bold;
+    padding: 3px;
+    padding-right: 15px;
+    clip-path: polygon(0 1%, 100% 0, 74% 100%, 0% 100%);
   }
   &.default {
     background-color: rgb(107, 114, 128);

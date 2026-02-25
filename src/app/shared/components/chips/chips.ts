@@ -1,27 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-
-const blue = [
-  'On Play',
-  'Active: Main',
-  'When Attacking',
-  'Activate: Main',
-  'End of Your Turn',
-  "Opponent's Turn",
-  'On Block',
-  'Main',
-  'Your Turn',
-  "On Your Opponent's Attack",
-  'On K.O.',
-];
-
-const pink = ['Once Per Turn'];
-
-const black = ['DON!! x2', 'DON!! x3', 'DON!! x1'];
-
-const orange = ['Rush', 'Banish', 'Blocker', 'Double Attack'];
-const red = ['Counter'];
-const yellow = ['Trigger'];
+import {
+  BLUE_EFFECTS,
+  PINK_EFFECTS,
+  BLACK_EFFECTS,
+  ORANGE_EFFECTS,
+  RED_EFFECTS,
+  YELLOW_EFFECTS,
+  type EffectColor,
+} from '../../models/effect-colors.constants';
 
 @Component({
   selector: 'app-chips',
@@ -68,13 +55,13 @@ export class Chips {
     return parts;
   }
 
-  getChipColor(effect: string): string {
-    if (blue.includes(effect)) return 'blue';
-    if (pink.includes(effect)) return 'pink';
-    if (black.includes(effect)) return 'black';
-    if (orange.includes(effect)) return 'orange';
-    if (red.includes(effect)) return 'red';
-    if (yellow.includes(effect)) return 'yellow';
+  getChipColor(effect: string): EffectColor {
+    if (BLUE_EFFECTS.includes(effect as any)) return 'blue';
+    if (PINK_EFFECTS.includes(effect as any)) return 'pink';
+    if (BLACK_EFFECTS.includes(effect as any)) return 'black';
+    if (ORANGE_EFFECTS.includes(effect as any)) return 'orange';
+    if (RED_EFFECTS.includes(effect as any)) return 'red';
+    if (YELLOW_EFFECTS.includes(effect as any)) return 'yellow';
     return 'default';
   }
 }
