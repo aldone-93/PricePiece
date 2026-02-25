@@ -17,6 +17,8 @@ export type SinglePrice = {
   idCategory: number;
   avg: number;
   minPriceDelta: number;
+  minEu: number;
+  minIta: number;
   productsInfo: productInfo[];
 };
 

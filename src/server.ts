@@ -39,11 +39,24 @@ app.use(
  * Handle all other requests by rendering the Angular application.
  */
 app.use((req, res, next) => {
+  // Calcola i secondi fino alle 8 di mattina del giorno successivo
+  const now = new Date();
+  const tomorrow8AM = new Date();
+  tomorrow8AM.setHours(8, 0, 0, 0);
+
+  // Se sono già passate le 8 di oggi, imposta per domani
+  if (now.getHours() >= 8) {
+    tomorrow8AM.setDate(tomorrow8AM.getDate() + 1);
+  }
+
+  const secondsUntil8AM = Math.floor((tomorrow8AM.getTime() - now.getTime()) / 1000);
+
+  // Imposta cache fino alle 8 del mattino
+  res.setHeader('Cache-Control', `public, max-age=${secondsUntil8AM}, must-revalidate`);
+
   angularApp
     .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
-    )
+    .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);
 });
 

@@ -14,24 +14,18 @@ export class Variants {
 
   private readonly platformId = inject(PLATFORM_ID);
 
-  getVariants(body: PricesBodyRequest) {
+  getVariants(name: string) {
     if (!isPlatformBrowser(this.platformId)) {
       // Evita la chiamata HTTP durante il prerendering
       return of([]);
     }
 
-    const { name, ...params } = body; // Estrai name e usa il resto come params
-
-    return this.httpClient
-      .get(`${environment.API_URL}variants/${encodeURIComponent(name || '')}`, {
-        params: { ...params },
-      })
-      .pipe(
-        map((res: any) => res.data),
-        catchError((error) => {
-          console.error('Error fetching prices:', error);
-          return of([]); // Restituisci un array vuoto in caso di errore
-        }),
-      );
+    return this.httpClient.get(`${environment.API_URL}variants/${name}`).pipe(
+      map((res: any) => res),
+      catchError((error) => {
+        console.error('Error fetching prices:', error);
+        return of([]); // Restituisci un array vuoto in caso di errore
+      }),
+    );
   }
 }

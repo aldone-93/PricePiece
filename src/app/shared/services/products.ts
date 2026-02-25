@@ -27,4 +27,11 @@ export class Products {
       map((response: any) => response.summary),
     );
   }
+
+  getBlueprint(code: string) {
+    return this.httpClient.get(environment.API_URL + `blueprints/${code}`).pipe(
+      // Map the response to extract the products array
+      map((response: any) => response),
+    );
+  }
 }

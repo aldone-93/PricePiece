@@ -9,11 +9,14 @@
 
 html {
   height: 100%;
+  color-scheme: light dark;
+
   @include mat.theme(
     (
       color: (
         primary: theme.$primary-palette,
         tertiary: theme.$tertiary-palette,
+        theme-type: dark,
       ),
       typography: (
         plain-family: 'Roboto, Twemoji Country Flags',
@@ -59,4 +62,48 @@ body {
   --accent-green: #24ec1c;
   --accent-gold: #ffcd00;
   /* Mantieni ombre/radius come prima */
+}
+
+/* Scrollbar moderna personalizzata */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-purple) var(--bg-secondary);
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent-purple) 0%, var(--accent-teal) 100%);
+  border-radius: 10px;
+  border: 2px solid var(--bg-secondary);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff8933 0%, #3a5291 100%);
+  border-color: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--accent-purple);
+}
+
+/* Scrollbar orizzontale più sottile per le liste di card */
+.m-variants::-webkit-scrollbar {
+  height: 6px;
+}
+
+.m-variants::-webkit-scrollbar-thumb {
+  background: var(--accent-purple);
+  border-radius: 6px;
+  border: 1px solid var(--bg-secondary);
 }

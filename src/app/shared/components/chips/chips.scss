@@ -1,0 +1,73 @@
+.m-effect-text {
+  display: block;
+  line-height: 1.6;
+  margin-bottom: 8px;
+
+  span {
+    vertical-align: middle;
+  }
+}
+
+.m-chip-inline {
+  display: inline-flex;
+  align-items: center;
+  color: white;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin: 0 2px;
+
+  &.black {
+    background-color: rgb(0, 0, 0);
+  }
+  &.blue {
+    background-color: rgb(4, 118, 153);
+  }
+  &.pink {
+    background-color: rgb(219, 39, 119);
+  }
+  &.orange {
+    background-color: rgb(249, 115, 22);
+  }
+  &.red {
+    background-color: rgb(220, 38, 38);
+  }
+  &.yellow {
+    background-color: rgb(234, 179, 8);
+    color: rgb(0, 0, 0);
+  }
+  &.default {
+    background-color: rgb(107, 114, 128);
+  }
+}
+
+.trigger {
+  span {
+    background-color: #ffff32;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    padding: 3px;
+    padding-right: 15px;
+    clip-path: polygon(0 1%, 100% 0, 74% 100%, 0% 100%);
+  }
+  background-color: rgb(0, 0, 0);
+}
+// Mantieni lo stile vecchio per compatibilità
+.chip {
+  display: inline-flex;
+  align-items: center;
+  color: white;
+  font-weight: 500;
+  font-size: 11px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: 0.25rem;
+
+  &.black {
+    background-color: rgb(0, 0, 0);
+  }
+  &.blue {
+    background-color: rgb(4, 118, 153);
+  }
+}

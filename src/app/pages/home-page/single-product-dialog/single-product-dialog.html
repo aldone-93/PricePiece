@@ -1,49 +1,98 @@
 <div class="o-header">
   <h2>{{ product()?.name }}</h2>
+  <a href="/search?illustrator={{ getBlueprint.value()?.illustrator }}">{{
+    getBlueprint.value()?.illustrator
+  }}</a>
 </div>
-<img
-  src="https://res.cloudinary.com/dntnvwjka/image/upload/{{ product()?.idProduct }}_SMALL.jpg"
-  alt="{{ product()?.name }}"
-/>
-<div class="o-charts">
-  <div>
-    <p>Prezzo minimo</p>
-    <canvas id="low"></canvas>
-  </div>
-  <div>
-    <p>Prezzo medio</p>
-    <canvas id="avg"></canvas>
-  </div>
-  <div>
-    <p>Prezzo medio 7 giorni</p>
-    <canvas id="avg7"></canvas>
-  </div>
-  <div>
-    <p>Tendenza(previsione futura)</p>
-    <canvas id="trend"></canvas>
-  </div>
-</div>
-
-<div class="m-variants">
-  @for (variant of getVariants.value(); track variant.idProduct) {
-    <div class="m-variant-card">
-      <h4>{{ variant.name }}</h4>
-      <img
-        src="https://res.cloudinary.com/dntnvwjka/image/upload/{{ variant.idProduct }}_SMALL.jpg"
-        alt="{{ variant.name }}"
-      />
-      <div class="m-cardInfo a-priceInfo">
-        <a
-          href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{ variant.idProduct }}"
-          target="_blank"
-          >🇮🇹: {{ variant.minIta | currency }}</a
-        >
-        <a
-          href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{ variant.idProduct }}"
-          target="_blank"
-          >🇪🇺: {{ variant.minEu | currency }}</a
-        >
+<div class="o-content">
+  <img
+    src="https://res.cloudinary.com/dntnvwjka/image/upload/{{ product()?.idProduct }}_SMALL.jpg"
+    alt="{{ product()?.name }}"
+  />
+  <mat-tab-group>
+    <mat-tab label="Info">
+      <div class="m-info">
+        <div class="m-effect">
+          @if (getBlueprint.isLoading()) {
+            <div class="m-chip skeleton"></div>
+          } @else {
+            <app-chips
+              [effects]="getBlueprint.value()?.texts"
+              [trigger]="getBlueprint.value()?.triggerCard"
+            ></app-chips>
+          }
+        </div>
+        <div class="m-priceInfo">
+          <canvas id="priceChart"></canvas>
+        </div>
       </div>
-    </div>
+    </mat-tab>
+    <mat-tab label="Rules">
+      <div class="m-rulings">
+        @if (getBlueprint.isLoading()) {
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text"></div>
+        } @else if (getBlueprint.value()?.rulings && getBlueprint.value()?.rulings.length > 0) {
+          @for (ruling of getBlueprint.value()?.rulings; track $index) {
+            <div class="m-ruling-item">
+              <div class="m-question"><strong>Q:</strong> {{ ruling.question }}</div>
+              <div class="m-answer"><strong>A:</strong> {{ ruling.answer }}</div>
+            </div>
+          }
+        } @else {
+          <p class="m-no-rulings">Nessuna regola disponibile per questa carta</p>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<br />
+<div class="m-variants">
+  @if (getVariants.isLoading()) {
+    @for (i of [1, 2, 3, 4, 5]; track i) {
+      <div class="m-variant-card skeleton">
+        <div class="skeleton-image"></div>
+      </div>
+    }
+  } @else {
+    @for (variant of getVariants.value(); track variant.idProduct) {
+      @if (!variant.isAsiaRegion) {
+        <div
+          class="m-variant-card"
+          (click)="selectVariant(variant)"
+          [class.loaded]="isImageLoaded(variant.idProduct)"
+        >
+          <div class="image-container">
+            @if (!isImageLoaded(variant.idProduct)) {
+              <div class="skeleton-image loading"></div>
+            }
+            <img
+              [class.visible]="isImageLoaded(variant.idProduct)"
+              src="https://res.cloudinary.com/dntnvwjka/image/upload/{{
+                variant.idProduct
+              }}_SMALL.jpg"
+              alt="{{ variant.name }}"
+              (load)="onImageLoad(variant.idProduct)"
+            />
+          </div>
+          <div class="m-cardInfo a-priceInfo">
+            <a
+              href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{
+                variant.idProduct
+              }}"
+              target="_blank"
+              >🇮🇹: {{ variant.minIta | currency }}</a
+            >
+            <a
+              href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{
+                variant.idProduct
+              }}"
+              target="_blank"
+              >🇪🇺: {{ variant.minEu | currency }}</a
+            >
+          </div>
+        </div>
+      }
+    }
   }
 </div>

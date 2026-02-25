@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { PriceResponse, PricesBodyRequest } from '../models/prices.model';
+import { PriceResponse, PricesBodyRequest, SinglePrice } from '../models/prices.model';
 import { catchError, map, of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
@@ -31,6 +31,24 @@ export class Prices {
         }),
       );
   }
+
+  getDynamicPricesHistory(idProduct: number) {
+    if (!isPlatformBrowser(this.platformId)) {
+      // Evita la chiamata HTTP durante il prerendering
+      return of([]);
+    }
+
+    return this.httpClient
+      .get<SinglePrice[]>(`${environment.API_URL}dynamicPrices/${idProduct}`)
+      .pipe(
+        map((res: SinglePrice[]) => res),
+        catchError((error) => {
+          console.error('Error fetching prices:', error);
+          return of([]); // Restituisci un array vuoto in caso di errore
+        }),
+      );
+  }
+
   getPrices(body?: PricesBodyRequest) {
     if (!isPlatformBrowser(this.platformId)) {
       // Evita la chiamata HTTP durante il prerendering

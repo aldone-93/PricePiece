@@ -1,0 +1,84 @@
+<div class="o-search-container">
+  <div class="m-search-header">
+    <h1>🔍 Ricerca Carte</h1>
+  </div>
+
+  <div class="m-search-filters">
+    <div class="m-filter-group">
+      <label for="name">Nome</label>
+      <input
+        id="name"
+        type="text"
+        [(ngModel)]="name"
+        placeholder="Es: Luffy, Zoro..."
+        (keyup.enter)="onSearch()"
+      />
+    </div>
+
+    <div class="m-filter-group">
+      <label for="color">Colore</label>
+      <input
+        id="color"
+        type="text"
+        [(ngModel)]="color"
+        placeholder="Es: Red, Blue..."
+        (keyup.enter)="onSearch()"
+      />
+    </div>
+
+    <div class="m-filter-group">
+      <label for="type">Tipo</label>
+      <input
+        id="type"
+        type="text"
+        [(ngModel)]="type"
+        placeholder="Es: Leader, Character..."
+        (keyup.enter)="onSearch()"
+      />
+    </div>
+
+    <div class="m-filter-group">
+      <label for="expansion">Espansione</label>
+      <input
+        id="expansion"
+        type="text"
+        [(ngModel)]="expansion"
+        placeholder="Es: OP01, OP02..."
+        (keyup.enter)="onSearch()"
+      />
+    </div>
+
+    <div class="m-filter-group">
+      <label for="rarity">Rarità</label>
+      <input
+        id="rarity"
+        type="text"
+        [(ngModel)]="rarity"
+        placeholder="Es: SR, SEC..."
+        (keyup.enter)="onSearch()"
+      />
+    </div>
+
+    <div class="m-filter-actions">
+      <button class="btn-primary" (click)="onSearch()">Cerca</button>
+      <button class="btn-secondary" (click)="clearFilters()">Reset</button>
+    </div>
+  </div>
+
+  <div class="m-search-results">
+    @if (searchResults.isLoading()) {
+      <app-skeleton-products />
+    } @else if (searchResults.value()?.length === 0) {
+      <div class="m-no-results">
+        <p>Nessuna carta trovata 😔</p>
+        <p>Prova a modificare i filtri di ricerca</p>
+      </div>
+    } @else {
+      <div class="m-results-grid">
+        @for (product of searchResults.value(); track product.idProduct) {
+          <!-- <app-product-card [card]="product" /> -->
+        }
+      </div>
+    }
+  </div>
+</div>
