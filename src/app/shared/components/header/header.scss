@@ -1,0 +1,102 @@
+.o-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-secondary);
+  border-bottom: 2px solid var(--bg-tertiary);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.m-container {
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.m-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  gap: 4px;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .a-price {
+    color: var(--text-primary);
+  }
+
+  .a-piece {
+    color: var(--accent-purple);
+  }
+}
+
+.m-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.m-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+
+  svg {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+
+    svg {
+      transform: translateY(-2px);
+    }
+  }
+
+  &.active {
+    background: var(--accent-purple);
+    color: white;
+  }
+}
+
+@media (max-width: 768px) {
+  .m-container {
+    padding: 0 16px;
+    height: 56px;
+  }
+
+  .m-logo {
+    font-size: 1.25rem;
+  }
+
+  .m-nav {
+    gap: 4px;
+  }
+
+  .m-nav-item {
+    padding: 8px 12px;
+    font-size: 0.875rem;
+
+    span {
+      display: none;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
