@@ -53,7 +53,7 @@
     } @else {
       @for (product of getTopLosers.value(); track product.idProduct) {
         <app-product-card
-          (click)="openSingleProductDialog(product)"
+          (cardClick)="openSingleProductDialog(product)"
           [id]="product.idProduct"
           [name]="product.name"
           [diff]="product.minEuDiff"
@@ -84,11 +84,10 @@
     }
   </div>
 </div>
-@if (selectedProduct()) {
-  <app-single-product-dialog
-    id="singleProductDialog"
-    popover
-    [product]="selectedProduct()"
-    (closeOutput)="selectedProduct.set(undefined)"
-  ></app-single-product-dialog>
-}
+
+<app-single-product-dialog
+  id="singleProductDialog"
+  popover
+  [product]="selectedProduct()"
+  (closeOutput)="closePopover()"
+></app-single-product-dialog>

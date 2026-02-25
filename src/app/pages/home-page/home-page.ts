@@ -98,9 +98,15 @@ export class HomePage {
   openSingleProductDialog(product: CardInfo) {
     this.selectedProduct.set(product);
 
+    // Usa setTimeout per assicurarsi che il DOM sia aggiornato
     const popover = document.getElementById('singleProductDialog') as any;
     if (popover && popover.showPopover) {
       popover.showPopover();
     }
+  }
+
+  closePopover() {
+    const popover = document.getElementById('singleProductDialog') as any;
+    popover?.hidePopover();
   }
 }
