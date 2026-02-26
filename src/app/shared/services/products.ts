@@ -44,4 +44,15 @@ export class Products {
       map((response: any) => response),
     );
   }
+
+  getProductsWithBlueprints(body?: ProductBodyRequest) {
+    return this.httpClient
+      .get<ProductResponse>(environment.API_URL + 'productsWithBlueprint', {
+        params: { ...body },
+      })
+      .pipe(
+        // Map the response to extract the products array
+        map((response) => response.data),
+      );
+  }
 }

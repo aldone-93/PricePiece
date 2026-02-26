@@ -75,7 +75,8 @@ export class SearchPage {
   // Resource per caricare i prodotti
   searchResults = rxResource({
     params: () => this.formData(),
-    stream: ({ params }) => this.productsService.getProducts(params as ProductBodyRequest),
+    stream: ({ params }) =>
+      this.productsService.getProductsWithBlueprints(params as ProductBodyRequest),
   });
 
   clearFilters() {
