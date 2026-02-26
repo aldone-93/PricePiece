@@ -20,6 +20,16 @@ export class Products {
         map((response) => response.data),
       );
   }
+  getSealedProducts(body?: ProductBodyRequest) {
+    return this.httpClient
+      .get<ProductResponse>(environment.API_URL + 'sealedProducts', {
+        params: { ...body },
+      })
+      .pipe(
+        // Map the response to extract the products array
+        map((response) => response.data),
+      );
+  }
 
   getExpansionsSummary() {
     return this.httpClient.get(environment.API_URL + 'expansions/summary').pipe(

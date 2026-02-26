@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, effect, inject, signal, WritableSignal } from '@angular/core';
 import { Expansions } from '../../shared/services/expansions';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { MatSelectModule } from '@angular/material/select';
@@ -94,6 +94,27 @@ export class HomePage {
     }),
     stream: ({ params }) => this.productService.getExpansionsSummary(),
   });
+
+  getSealedMovers = rxResource({
+    params: () => ({
+      page: this.page(),
+      pageSize: 10,
+      name: this.filtersForm.name().value(),
+      minPrice: this.filtersForm.minPrice().value(),
+      maxPrice: this.filtersForm.maxPrice().value(),
+      sort: 'minEuDiff',
+      ...(this.filtersForm.expansion().value() !== 0 && {
+        expansion: this.filtersForm.expansion().value(),
+      }),
+    }),
+    stream: ({ params }) => this.productService.getSealedProducts(params),
+  });
+
+  constructor() {
+    effect(() => {
+      const product = this.selectedProduct();
+    });
+  }
 
   openSingleProductDialog(product: CardInfo) {
     this.selectedProduct.set(product);

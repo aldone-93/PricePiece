@@ -2,14 +2,35 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Products } from '../../shared/services/products';
-import { ProductBodyRequest } from '../../shared/models/products.model';
-import { FormsModule } from '@angular/forms';
+import { CardInfo, ProductBodyRequest } from '../../shared/models/products.model';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductCard } from '../home-page/components/product-card/product-card';
 import { SkeletonProducts } from '../home-page/components/skeleton-products/skeleton-products';
+import { SingleProductDialog } from '../home-page/single-product-dialog/single-product-dialog';
+import { form } from '@angular/forms/signals';
+import { CommonModule } from '@angular/common';
+import { FormField } from '@angular/forms/signals';
+import { CARD_COLORS } from '../../shared/models/card-colors.constants';
+
+interface formData {
+  name: string;
+  color: string[];
+  type: string;
+  expansion: string;
+  rarity: string;
+}
 
 @Component({
   selector: 'app-search-page',
-  imports: [FormsModule, ProductCard, SkeletonProducts],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    SingleProductDialog,
+    FormField,
+    ProductCard,
+    SkeletonProducts,
+  ],
   templateUrl: './search-page.html',
   styleUrls: ['./search-page.scss'],
 })
@@ -18,79 +39,71 @@ export class SearchPage {
   private router = inject(Router);
   private productsService = inject(Products);
 
+  // Colori disponibili
+  cardColors = CARD_COLORS;
+
   // Filtri di ricerca
-  searchFilters = signal<ProductBodyRequest>({});
+  selectedProduct = signal<CardInfo | undefined>(undefined);
 
   // Form fields
-  name = signal('');
-  color = signal('');
-  type = signal('');
-  expansion = signal('');
-  rarity = signal('');
+  formData = signal<formData>({
+    name: '',
+    color: [],
+    type: '',
+    expansion: '',
+    rarity: '',
+  });
 
-  constructor() {
-    // Leggi i query params all'inizializzazione
-    effect(
-      () => {
-        this.route.queryParams.subscribe((params) => {
-          this.name.set(params['name'] || '');
-          this.color.set(params['color'] || '');
-          this.type.set(params['type'] || '');
-          this.expansion.set(params['expansion'] || '');
-          this.rarity.set(params['rarity'] || '');
+  searchForm = form(this.formData);
 
-          this.updateFilters();
-        });
-      },
-      { allowSignalWrites: true },
-    );
+  toggleColor(colorValue: string) {
+    const currentColors = this.searchForm.color().value();
+    // Se il colore è già selezionato, rimuovilo
+    if (currentColors.includes(colorValue)) {
+      const newColors = currentColors.filter((c) => c !== colorValue);
+      this.searchForm.color().setControlValue(newColors);
+    } else {
+      // Aggiungi il colore alla lista
+      this.searchForm.color().setControlValue([...currentColors, colorValue]);
+    }
+  }
+
+  isColorSelected(colorValue: string): boolean {
+    return this.searchForm.color().value().includes(colorValue);
   }
 
   // Resource per caricare i prodotti
   searchResults = rxResource({
-    params: () => this.searchFilters(),
-    stream: (params) => this.productsService.getProducts(),
+    params: () => this.formData(),
+    stream: ({ params }) => this.productsService.getProducts(params as ProductBodyRequest),
   });
 
-  updateFilters() {
-    const filters: any = {};
-
-    if (this.name()) filters.name = this.name();
-    if (this.color()) filters.color = this.color();
-    if (this.type()) filters.type = this.type();
-    if (this.expansion()) filters.expansion = this.expansion();
-    if (this.rarity()) filters.rarity = this.rarity();
-
-    this.searchFilters.set(filters);
-  }
-
-  onSearch() {
-    // Aggiorna i query params nella URL
-    const queryParams: any = {};
-
-    if (this.name()) queryParams.name = this.name();
-    if (this.color()) queryParams.color = this.color();
-    if (this.type()) queryParams.type = this.type();
-    if (this.expansion()) queryParams.expansion = this.expansion();
-    if (this.rarity()) queryParams.rarity = this.rarity();
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams,
-      queryParamsHandling: 'merge',
-    });
-  }
-
   clearFilters() {
-    this.name.set('');
-    this.color.set('');
-    this.type.set('');
-    this.expansion.set('');
-    this.rarity.set('');
+    this.formData.set({
+      name: '',
+      color: [],
+      type: '',
+      expansion: '',
+      rarity: '',
+    });
 
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {},
     });
+  }
+
+  openSingleProductDialog(product: CardInfo) {
+    this.selectedProduct.set(product);
+
+    const popover = document.getElementById('singleProductDialog') as any;
+    if (popover && popover.showPopover) {
+      popover.showPopover();
+    }
+  }
+
+  closePopover() {
+    const popover = document.getElementById('singleProductDialog') as any;
+    popover?.hidePopover();
   }
 }

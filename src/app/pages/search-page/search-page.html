@@ -6,24 +6,39 @@
   <div class="m-search-filters">
     <div class="m-filter-group">
       <label for="name">Nome</label>
-      <input
-        id="name"
-        type="text"
-        [(ngModel)]="name"
-        placeholder="Es: Luffy, Zoro..."
-        (keyup.enter)="onSearch()"
-      />
+      <input id="name" type="text" [formField]="searchForm.name" placeholder="Es: Luffy, Zoro..." />
     </div>
 
-    <div class="m-filter-group">
-      <label for="color">Colore</label>
-      <input
-        id="color"
-        type="text"
-        [(ngModel)]="color"
-        placeholder="Es: Red, Blue..."
-        (keyup.enter)="onSearch()"
-      />
+    <div class="m-filter-group m-color-selector">
+      <label>Colore</label>
+      <div class="m-color-options">
+        @for (color of cardColors; track color.value) {
+          <button
+            type="button"
+            class="a-color-ball"
+            [class.selected]="isColorSelected(color.value)"
+            [style.background-color]="color.hex"
+            [title]="color.name"
+            (click)="toggleColor(color.value)"
+          >
+            @if (isColorSelected(color.value)) {
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            }
+          </button>
+        }
+      </div>
     </div>
 
     <div class="m-filter-group">
@@ -31,9 +46,8 @@
       <input
         id="type"
         type="text"
-        [(ngModel)]="type"
+        [formField]="searchForm.type"
         placeholder="Es: Leader, Character..."
-        (keyup.enter)="onSearch()"
       />
     </div>
 
@@ -42,25 +56,18 @@
       <input
         id="expansion"
         type="text"
-        [(ngModel)]="expansion"
+        [formField]="searchForm.expansion"
         placeholder="Es: OP01, OP02..."
-        (keyup.enter)="onSearch()"
       />
     </div>
 
     <div class="m-filter-group">
       <label for="rarity">Rarità</label>
-      <input
-        id="rarity"
-        type="text"
-        [(ngModel)]="rarity"
-        placeholder="Es: SR, SEC..."
-        (keyup.enter)="onSearch()"
-      />
+      <input id="rarity" type="text" [formField]="searchForm.rarity" placeholder="Es: SR, SEC..." />
     </div>
 
     <div class="m-filter-actions">
-      <button class="btn-primary" (click)="onSearch()">Cerca</button>
+      <button class="btn-primary">Cerca</button>
       <button class="btn-secondary" (click)="clearFilters()">Reset</button>
     </div>
   </div>
@@ -76,9 +83,24 @@
     } @else {
       <div class="m-results-grid">
         @for (product of searchResults.value(); track product.idProduct) {
-          <!-- <app-product-card [card]="product" /> -->
+          <app-product-card
+            (cardClick)="openSingleProductDialog(product)"
+            [id]="product.idProduct"
+            [name]="product.name"
+            [diff]="product.minEuDiff"
+            [minIta]="product.minIta"
+            [minEu]="product.minEu"
+            [ctrader_id]="product.ctrader_id"
+          ></app-product-card>
         }
       </div>
     }
   </div>
 </div>
+
+<app-single-product-dialog
+  id="singleProductDialog"
+  popover
+  [product]="selectedProduct()"
+  (closeOutput)="closePopover()"
+></app-single-product-dialog>

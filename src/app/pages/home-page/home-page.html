@@ -83,6 +83,24 @@
       </div>
     }
   </div>
+
+  <div class="o-product-list">
+    <h2>Sealed movers</h2>
+
+    @for (product of getSealedMovers.value(); track product.idProduct) {
+      <div class="m-product-card">
+        <app-product-card
+          (cardClick)="openSingleProductDialog(product)"
+          [id]="product.idProduct"
+          [name]="product.name"
+          [diff]="product.minEuDiff"
+          [minIta]="product.minIta"
+          [minEu]="product.minEu"
+          [ctrader_id]="product.ctrader_id"
+        ></app-product-card>
+      </div>
+    }
+  </div>
 </div>
 
 <app-single-product-dialog

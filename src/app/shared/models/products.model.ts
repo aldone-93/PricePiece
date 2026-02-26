@@ -2,8 +2,10 @@ export type ProductBodyRequest = {
   page?: number;
   pageSize?: number;
   name?: string;
-  expansion?: number;
+  expansion?: string | number;
   rarity?: string;
+  color?: string[];
+  type?: string;
 };
 
 export type CardInfo = {
