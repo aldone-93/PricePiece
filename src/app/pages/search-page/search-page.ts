@@ -7,7 +7,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductCard } from '../home-page/components/product-card/product-card';
 import { SkeletonProducts } from '../home-page/components/skeleton-products/skeleton-products';
 import { SingleProductDialog } from '../home-page/single-product-dialog/single-product-dialog';
-import { form } from '@angular/forms/signals';
+import { debounce, form } from '@angular/forms/signals';
 import { CommonModule } from '@angular/common';
 import { FormField } from '@angular/forms/signals';
 import { CARD_COLORS } from '../../shared/models/card-colors.constants';
@@ -54,7 +54,9 @@ export class SearchPage {
     rarity: '',
   });
 
-  searchForm = form(this.formData);
+  searchForm = form(this.formData, (schema) => {
+    debounce(schema.name, 500);
+  });
 
   toggleColor(colorValue: string) {
     const currentColors = this.searchForm.color().value();
@@ -74,7 +76,7 @@ export class SearchPage {
 
   // Resource per caricare i prodotti
   searchResults = rxResource({
-    params: () => (this.searchForm.name().value().length >= 3 ? this.formData() : undefined),
+    params: () => this.formData(),
     stream: ({ params }) =>
       this.productsService.getProductsWithBlueprints(params as ProductBodyRequest),
   });
