@@ -38,6 +38,13 @@ export class Products {
     );
   }
 
+  getCodes() {
+    return this.httpClient.get(environment.API_URL + 'getDistinctCodes').pipe(
+      // Map the response to extract the products array
+      map((response: any) => response.categories),
+    );
+  }
+
   getBlueprint(code: string) {
     return this.httpClient.get(environment.API_URL + `blueprints/${code}`).pipe(
       // Map the response to extract the products array
@@ -50,9 +57,24 @@ export class Products {
       .get<ProductResponse>(environment.API_URL + 'productsWithBlueprint', {
         params: { ...body },
       })
-      .pipe(
-        // Map the response to extract the products array
-        map((response) => response.data),
-      );
+      .pipe(map((response) => response.data));
+  }
+
+  getProductsWithBlueprintsRaw(body?: ProductBodyRequest) {
+    return this.httpClient.get<ProductResponse>(environment.API_URL + 'productsWithBlueprint', {
+      params: { ...body },
+    });
+  }
+
+  getTypes() {
+    return this.httpClient
+      .get<string[]>(environment.API_URL + 'types')
+      .pipe(map((response) => response));
+  }
+
+  searchImage(file: File) {
+    const formData = new FormData();
+    formData.append('image', file);
+    return this.httpClient.post<{ data: any[] }>(environment.API_URL + 'searchImage', formData);
   }
 }

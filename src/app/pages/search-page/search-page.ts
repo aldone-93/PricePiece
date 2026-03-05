@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Products } from '../../shared/services/products';
-import { CardInfo, ProductBodyRequest } from '../../shared/models/products.model';
+import { CardInfo, ProductBodyRequest, ProductResponse } from '../../shared/models/products.model';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductCard } from '../home-page/components/product-card/product-card';
 import { SkeletonProducts } from '../home-page/components/skeleton-products/skeleton-products';
@@ -11,6 +11,8 @@ import { debounce, form } from '@angular/forms/signals';
 import { CommonModule } from '@angular/common';
 import { FormField } from '@angular/forms/signals';
 import { CARD_COLORS } from '../../shared/models/card-colors.constants';
+import { SetSelector } from '../set-selector/set-selector';
+import { Pagination } from '../../shared/components/pagination/pagination';
 
 interface formData {
   name: string;
@@ -29,6 +31,8 @@ interface formData {
     SingleProductDialog,
     FormField,
     ProductCard,
+    SetSelector,
+    Pagination,
     SkeletonProducts,
   ],
   templateUrl: './search-page.html',
@@ -41,6 +45,9 @@ export class SearchPage {
 
   // Colori disponibili
   cardColors = CARD_COLORS;
+
+  // Rarità disponibili
+  rarities = ['Leader', 'Common', 'Uncommon', 'Rare', 'Super Rare', 'Secret Rare', 'Promo'];
 
   // Filtri di ricerca
   selectedProduct = signal<CardInfo | undefined>(undefined);
@@ -74,14 +81,31 @@ export class SearchPage {
     return this.searchForm.color().value().includes(colorValue);
   }
 
+  // Pagina corrente
+  currentPage = signal(1);
+
   // Resource per caricare i prodotti
   searchResults = rxResource({
-    params: () => this.formData(),
+    params: () => ({ ...this.formData(), page: this.currentPage() }),
     stream: ({ params }) =>
-      this.productsService.getProductsWithBlueprints(params as ProductBodyRequest),
+      this.productsService.getProductsWithBlueprintsRaw(params as ProductBodyRequest),
+  });
+
+  pagination = computed(() => this.searchResults.value()?.pagination);
+  products = computed(() => this.searchResults.value()?.data ?? []);
+
+  onPageChange(page: number) {
+    this.currentPage.set(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Resource per caricare i tipi disponibili
+  typesResource = rxResource({
+    stream: () => this.productsService.getTypes(),
   });
 
   clearFilters() {
+    this.currentPage.set(1);
     this.formData.set({
       name: '',
       color: [],

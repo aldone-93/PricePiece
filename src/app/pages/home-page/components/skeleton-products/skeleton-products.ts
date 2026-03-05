@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './skeleton-products.scss',
 })
 export class SkeletonProducts {
-  skeletonItems = Array(5).fill(0);
+  skeletonItems = Array(10).fill(0);
 }

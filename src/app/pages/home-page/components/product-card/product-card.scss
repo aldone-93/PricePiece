@@ -74,6 +74,8 @@ p.negative {
 }
 .o-cardImage {
   position: relative;
+  min-width: 168px;
+  min-height: 240px;
 }
 a {
   display: flex;

@@ -48,22 +48,30 @@
         type="text"
         [formField]="searchForm.type"
         placeholder="Es: Leader, Character..."
+        list="type-options"
       />
+      <datalist id="type-options">
+        @for (type of typesResource.value(); track type) {
+          <option [value]="type">{{ type }}</option>
+        }
+      </datalist>
     </div>
 
     <div class="m-filter-group">
       <label for="expansion">Espansione</label>
-      <input
-        id="expansion"
-        type="text"
-        [formField]="searchForm.expansion"
-        placeholder="Es: OP01, OP02..."
-      />
+      <app-set-selector
+        (expansionSelected)="searchForm.expansion().setControlValue($event)"
+      ></app-set-selector>
     </div>
 
     <div class="m-filter-group">
       <label for="rarity">Rarità</label>
-      <input id="rarity" type="text" [formField]="searchForm.rarity" placeholder="Es: SR, SEC..." />
+      <select id="rarity" [formField]="searchForm.rarity">
+        <option value="">Tutte</option>
+        @for (rarity of rarities; track rarity) {
+          <option [value]="rarity">{{ rarity }}</option>
+        }
+      </select>
     </div>
 
     <div class="m-filter-actions">
@@ -75,14 +83,14 @@
   <div class="m-search-results">
     @if (searchResults.isLoading()) {
       <app-skeleton-products />
-    } @else if (searchResults.value()?.length === 0) {
+    } @else if (products().length === 0) {
       <div class="m-no-results">
         <p>Nessuna carta trovata 😔</p>
         <p>Prova a modificare i filtri di ricerca</p>
       </div>
     } @else {
       <div class="m-results-grid">
-        @for (product of searchResults.value(); track product.idProduct) {
+        @for (product of products(); track product.idProduct) {
           <app-product-card
             (cardClick)="openSingleProductDialog(product)"
             [id]="product.idProduct"
@@ -94,6 +102,16 @@
           ></app-product-card>
         }
       </div>
+
+      @if (pagination(); as pag) {
+        <app-pagination
+          [currentPage]="pag.page"
+          [totalPages]="pag.totalPages"
+          [hasNext]="pag.hasNext"
+          [hasPrev]="pag.hasPrev"
+          (pageChange)="onPageChange($event)"
+        />
+      }
     }
   </div>
 </div>
