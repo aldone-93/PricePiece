@@ -1,14 +1,12 @@
-@for (effect of parsedEffects(); track $index) {
-  <div class="m-effect-text">
-    @for (part of effect; track $index) {
-      @if (part.type === 'chip') {
-        <span class="m-chip-inline {{ part.color }}">{{ part.content }}</span>
-      } @else {
-        <span>{{ part.content }}</span>
-      }
+<div class="m-effect-text">
+  @for (part of parsedEffects(); track $index) {
+    @if (part.type === 'chip') {
+      <span class="m-chip-inline {{ part.color }}">{{ part.content }}</span>
+    } @else {
+      <span>{{ part.content }}</span>
     }
-  </div>
-}
+  }
+</div>
 
 @if (trigger()) {
   <div class="trigger">

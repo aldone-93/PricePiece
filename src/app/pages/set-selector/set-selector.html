@@ -1,7 +1,9 @@
 <div class="m-set-selector">
   @for (group of groups; track group.prefix) {
     <div class="m-group">
-      <button class="a-group-btn" type="button">{{ group.label }}</button>
+      <button class="a-group-btn" type="button" [class.selected]="isGroupSelected(group)">
+        {{ group.label }}
+      </button>
       <div class="m-dropdown">
         @if (expansionsResource.isLoading()) {
           <span class="a-loading">...</span>
@@ -9,7 +11,12 @@
           <span class="a-empty">Nessuna</span>
         } @else {
           @for (exp of group.expansions; track exp) {
-            <button class="a-expansion-item" type="button" (click)="select(exp)">
+            <button
+              class="a-expansion-item"
+              type="button"
+              [class.selected]="selected() === exp"
+              (click)="select(exp)"
+            >
               {{ exp }}
             </button>
           }

@@ -6,6 +6,7 @@ export type ProductBodyRequest = {
   rarity?: string;
   color?: string[];
   type?: string;
+  artist?: string;
 };
 
 export type CardInfo = {

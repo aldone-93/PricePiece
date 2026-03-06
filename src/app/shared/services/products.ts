@@ -72,6 +72,19 @@ export class Products {
       .pipe(map((response) => response));
   }
 
+  getArtists() {
+    return this.httpClient
+      .get<any>(environment.API_URL + 'artists')
+      .pipe(
+        map(
+          (response) =>
+            (Array.isArray(response)
+              ? response
+              : (response.artists ?? response.data ?? [])) as string[],
+        ),
+      );
+  }
+
   searchImage(file: File) {
     const formData = new FormData();
     formData.append('image', file);

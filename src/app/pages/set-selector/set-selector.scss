@@ -29,6 +29,11 @@
     background: var(--accent-purple, #7c3aed);
     border-color: var(--accent-purple, #7c3aed);
   }
+
+  &.selected {
+    background: var(--accent-purple, #7c3aed);
+    border-color: var(--accent-purple, #7c3aed);
+  }
 }
 
 .m-dropdown {
@@ -59,11 +64,19 @@
   background: transparent;
   color: var(--text-primary, #fff);
   cursor: pointer;
-  transition: background 0.15s;
+  border-radius: 4px;
+  transition:
+    background 0.15s,
+    color 0.15s;
 
   &:hover {
     background: var(--bg-tertiary, #2a2a2a);
     color: var(--accent-purple, #7c3aed);
+  }
+
+  &.selected {
+    background: var(--accent-purple, #7c3aed);
+    color: #fff;
   }
 }
 

@@ -20,6 +20,7 @@ interface formData {
   type: string;
   expansion: string;
   rarity: string;
+  artist: string;
 }
 
 @Component({
@@ -59,6 +60,7 @@ export class SearchPage {
     type: '',
     expansion: '',
     rarity: '',
+    artist: '',
   });
 
   searchForm = form(this.formData, (schema) => {
@@ -104,6 +106,11 @@ export class SearchPage {
     stream: () => this.productsService.getTypes(),
   });
 
+  // Resource per caricare gli artisti disponibili
+  artistsResource = rxResource({
+    stream: () => this.productsService.getArtists(),
+  });
+
   clearFilters() {
     this.currentPage.set(1);
     this.formData.set({
@@ -112,6 +119,7 @@ export class SearchPage {
       type: '',
       expansion: '',
       rarity: '',
+      artist: '',
     });
 
     this.router.navigate([], {
@@ -120,8 +128,9 @@ export class SearchPage {
     });
   }
 
-  openSingleProductDialog(product: CardInfo) {
-    this.selectedProduct.set(product);
+  openSingleProductDialog(product: any) {
+    const foundProduct = product.product.find((p: any) => p.idProduct === product.idProduct);
+    this.selectedProduct.set(foundProduct);
 
     const popover = document.getElementById('singleProductDialog') as any;
     if (popover && popover.showPopover) {

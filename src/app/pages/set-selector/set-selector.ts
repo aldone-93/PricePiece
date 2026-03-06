@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { Products } from '../../shared/services/products';
@@ -19,6 +19,8 @@ export class SetSelector {
   private productsService = inject(Products);
 
   expansionSelected = output<string>();
+
+  selected = signal<string | null>(null);
 
   expansionsResource = rxResource({
     stream: () => this.productsService.getCodes(),
@@ -51,6 +53,17 @@ export class SetSelector {
   }
 
   select(expansion: string) {
-    this.expansionSelected.emit(expansion);
+    if (this.selected() === expansion) {
+      this.selected.set(null);
+      this.expansionSelected.emit('');
+    } else {
+      this.selected.set(expansion);
+      this.expansionSelected.emit(expansion);
+    }
+  }
+
+  isGroupSelected(group: ExpansionGroup): boolean {
+    const s = this.selected();
+    return s != null && group.expansions.includes(s);
   }
 }

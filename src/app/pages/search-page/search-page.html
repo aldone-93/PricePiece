@@ -66,12 +66,28 @@
 
     <div class="m-filter-group">
       <label for="rarity">Rarità</label>
-      <select id="rarity" [formField]="searchForm.rarity">
+      <select id="rarity" [formField]="searchForm.rarity" class="a-select">
         <option value="">Tutte</option>
         @for (rarity of rarities; track rarity) {
           <option [value]="rarity">{{ rarity }}</option>
         }
       </select>
+    </div>
+
+    <div class="m-filter-group">
+      <label for="artist">Artista</label>
+      <input
+        id="artist"
+        type="text"
+        [formField]="searchForm.artist"
+        placeholder="Es: Eiichiro Oda..."
+        list="artist-options"
+      />
+      <datalist id="artist-options">
+        @for (artist of (artistsResource.value() ?? []); track artist) {
+          <option [value]="artist">{{ artist }}</option>
+        }
+      </datalist>
     </div>
 
     <div class="m-filter-actions">

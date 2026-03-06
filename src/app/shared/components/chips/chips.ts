@@ -17,11 +17,11 @@ import {
   styleUrl: './chips.scss',
 })
 export class Chips {
-  effects = input.required<string[]>();
+  effects = input.required<string>();
   trigger = input<string>();
   // Divide il testo in parti: testo normale e chip
   parsedEffects = computed(() => {
-    return this.effects().map((text) => this.parseText(text));
+    return this.parseText(this.effects());
   });
 
   parseText(text: string): Array<{ type: 'text' | 'chip'; content: string; color?: string }> {
@@ -48,7 +48,7 @@ export class Chips {
     }
 
     // Aggiungi il testo rimanente
-    if (lastIndex < text.length) {
+    if (lastIndex < text?.length) {
       parts.push({ type: 'text', content: text.slice(lastIndex) });
     }
 
