@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Products } from '../../shared/services/products';
@@ -85,6 +85,14 @@ export class SearchPage {
 
   // Pagina corrente
   currentPage = signal(1);
+
+  constructor() {
+    // Resetta a pagina 1 ogni volta che i filtri cambiano
+    effect(() => {
+      this.formData(); // dipendenza reattiva
+      untracked(() => this.currentPage.set(1));
+    });
+  }
 
   // Resource per caricare i prodotti
   searchResults = rxResource({
