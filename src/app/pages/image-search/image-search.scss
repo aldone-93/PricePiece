@@ -1,28 +1,53 @@
 // ── Keyframes ─────────────────────────────────────────────────────
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes scan-line {
-  0%   { top: 0; opacity: 1; }
-  95%  { top: calc(100% - 2px); opacity: 1; }
-  100% { top: calc(100% - 2px); opacity: 0; }
+  0% {
+    top: 0;
+    opacity: 1;
+  }
+  95% {
+    top: calc(100% - 2px);
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 2px);
+    opacity: 0;
+  }
 }
 
 // ── Root container ────────────────────────────────────────────────
 .scanner-root {
-  position: fixed;
   inset: 0;
   background: #0a0f1e;
   overflow: hidden;
@@ -69,10 +94,26 @@
   border-style: solid;
   border-radius: 2px;
 
-  &.vf-tl { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
-  &.vf-tr { top: -2px; right: -2px; border-width: 3px 3px 0 0; }
-  &.vf-bl { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; }
-  &.vf-br { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
+  &.vf-tl {
+    top: -2px;
+    left: -2px;
+    border-width: 3px 0 0 3px;
+  }
+  &.vf-tr {
+    top: -2px;
+    right: -2px;
+    border-width: 3px 3px 0 0;
+  }
+  &.vf-bl {
+    bottom: -2px;
+    left: -2px;
+    border-width: 0 0 3px 3px;
+  }
+  &.vf-br {
+    bottom: -2px;
+    right: -2px;
+    border-width: 0 3px 3px 0;
+  }
 }
 
 .vf-scanline {

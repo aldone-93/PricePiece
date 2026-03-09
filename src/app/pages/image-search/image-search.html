@@ -1,5 +1,4 @@
 <div class="scanner-root">
-
   <!-- Video fullscreen background -->
   <video #videoEl autoplay playsinline muted class="scanner-video"></video>
 
@@ -17,27 +16,8 @@
     </div>
   }
 
-  <!-- ── Header ── -->
-  <div class="scanner-header">
-    <div class="scanner-header__left">
-      <span style="font-size: 24px">🏴‍☠️</span>
-      <div class="scanner-title">ONE PIECE SCANNER</div>
-    </div>
-    <div class="status-indicator">
-      <div
-        class="status-dot"
-        [class.status-dot--ready]="ready()"
-        [class.status-dot--init]="!ready()"
-      ></div>
-      <span class="status-label" [class.status-label--ready]="ready()">
-        {{ ready() ? 'LIVE' : 'INIT' }}
-      </span>
-    </div>
-  </div>
-
   <!-- ── Bottom HUD ── -->
   <div class="bottom-hud">
-
     @if (previewUrl()) {
       <div class="scan-result-area">
         <img [src]="previewUrl()" class="preview-thumb" alt="Carta catturata" />
@@ -57,13 +37,14 @@
                 [style.color]="getRarityColor(r.rarity)"
                 [style.background]="getRarityColor(r.rarity) + '22'"
                 [style.border-color]="getRarityColor(r.rarity) + '55'"
-              >{{ r.rarity }}</span>
+                >{{ r.rarity }}</span
+              >
             </div>
             <div class="result-card__prices">
               <div>
                 <div class="result-card__price-label">EU MIN</div>
                 <div class="result-card__price-eu">
-                  {{ r.minEu != null ? ('€ ' + r.minEu.toFixed(2)) : '€ —' }}
+                  {{ r.minEu != null ? '€ ' + r.minEu.toFixed(2) : '€ —' }}
                 </div>
               </div>
               @if (r.minIta != null) {
@@ -74,7 +55,12 @@
               }
             </div>
             @if (r.cardtraderUrl) {
-              <a [href]="r.cardtraderUrl" target="_blank" rel="noreferrer" class="result-card__link">
+              <a
+                [href]="r.cardtraderUrl"
+                target="_blank"
+                rel="noreferrer"
+                class="result-card__link"
+              >
                 ↗ CARDTRADER
               </a>
             }
@@ -125,5 +111,4 @@
       <button class="btn-retry" (click)="reload()">RIPROVA</button>
     </div>
   }
-
 </div>
