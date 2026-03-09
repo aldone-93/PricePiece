@@ -23,7 +23,9 @@
 </div>
 <div class="o-content">
   <img
-    src="https://res.cloudinary.com/dntnvwjka/image/upload/{{ product()?.idProduct }}_SMALL.jpg"
+    src="https://onepiece-images.s3.eu-north-1.amazonaws.com/images/{{
+      product()?.idProduct
+    }}_SMALL.jpg"
     alt="{{ product()?.name }}"
   />
   <mat-tab-group>
@@ -85,7 +87,7 @@
             }
             <img
               [class.visible]="isImageLoaded(variant.idProduct)"
-              src="https://res.cloudinary.com/dntnvwjka/image/upload/{{
+              src="https://onepiece-images.s3.eu-north-1.amazonaws.com/images/{{
                 variant.idProduct
               }}_SMALL.jpg"
               alt="{{ variant.name }}"

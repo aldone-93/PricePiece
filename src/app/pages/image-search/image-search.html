@@ -1,126 +1,69 @@
 <div class="scanner-root">
-  <!-- Video -->
+
+  <!-- Video fullscreen background -->
   <video #videoEl autoplay playsinline muted class="scanner-video"></video>
 
-  <!-- AR canvas overlay -->
-  <canvas #overlayEl class="scanner-overlay"></canvas>
-
-  <!-- Processing canvas (hidden) -->
-  <canvas #procEl style="display: none"></canvas>
+  <!-- ── Viewfinder overlay ── -->
+  @if (ready() && !previewUrl()) {
+    <div class="vf-overlay">
+      <div #viewfinderEl class="viewfinder">
+        <div class="vf-corner vf-tl"></div>
+        <div class="vf-corner vf-tr"></div>
+        <div class="vf-corner vf-bl"></div>
+        <div class="vf-corner vf-br"></div>
+        <div class="vf-scanline"></div>
+      </div>
+      <p class="vf-hint">Inquadra la carta nel riquadro</p>
+    </div>
+  }
 
   <!-- ── Header ── -->
   <div class="scanner-header">
     <div class="scanner-header__left">
-      <span style="font-size: 26px">🏴‍☠️</span>
-      <div>
-        <div class="scanner-title">ONE PIECE SCANNER</div>
-        <div class="scanner-subtitle">AR CARD RECOGNITION v3</div>
-      </div>
+      <span style="font-size: 24px">🏴‍☠️</span>
+      <div class="scanner-title">ONE PIECE SCANNER</div>
     </div>
-    <div class="scanner-header__right">
-      <button (click)="toggleDebug()" [class.dbg-active]="debug()" class="dbg-btn">DBG</button>
-      <div class="status-indicator">
-        <div
-          class="status-dot"
-          [class.status-dot--ready]="ready()"
-          [class.status-dot--init]="!ready()"
-        ></div>
-        <span [class.status-label--ready]="ready()" class="status-label">
-          {{ ready() ? 'LIVE' : 'INIT' }}
-        </span>
-      </div>
+    <div class="status-indicator">
+      <div
+        class="status-dot"
+        [class.status-dot--ready]="ready()"
+        [class.status-dot--init]="!ready()"
+      ></div>
+      <span class="status-label" [class.status-label--ready]="ready()">
+        {{ ready() ? 'LIVE' : 'INIT' }}
+      </span>
     </div>
   </div>
 
-  <!-- ── Debug HUD ── -->
-  @if (debug() && ready()) {
-    <div class="debug-hud">
-      <div class="debug-hud__title">◆ DEBUG DETECTION</div>
-      <div>
-        Res: <b>{{ debugInfo().vw }}×{{ debugInfo().vh }}</b>
-      </div>
-      <div>
-        Min area: <b>{{ debugInfo().minA }} px²</b>
-      </div>
-      <div>
-        Max area: <b>{{ debugInfo().maxA }} px²</b>
-      </div>
-      <div>
-        Contorni totali: <b class="debug-orange">{{ debugInfo().total }}</b>
-      </div>
-      <div>
-        Passano area: <b class="debug-purple">{{ debugInfo().pArea }}</b>
-      </div>
-      <div>
-        Passano solidity: <b class="debug-orange">{{ debugInfo().pSolid }}</b>
-      </div>
-      <div>
-        Passano ratio: <b class="debug-teal">{{ debugInfo().pRatio }}</b>
-      </div>
-      <div>
-        Hanno 4 punti: <b class="debug-green">{{ debugInfo().p4pts }}</b>
-      </div>
-      <div class="debug-hud__found">
-        Carte rilevate:
-        <b
-          [style.color]="(debugInfo().found ?? 0) > 0 ? '#4ECDC4' : '#FF6B6B'"
-          style="font-size: 13px"
-        >
-          {{ debugInfo().found ?? 0 }}
-        </b>
-      </div>
-    </div>
-  }
-
   <!-- ── Bottom HUD ── -->
   <div class="bottom-hud">
-    <!-- Detection status -->
-    <div class="detection-status">
-      @if (ready() && !previews()) {
-        <span
-          [class.detection-status__text--active]="cardCount() > 0"
-          [class.detection-status__text--idle]="cardCount() === 0"
-          class="detection-status__text"
-        >
-          @if (cardCount() > 0) {
-            ◆ {{ cardCount() }} CARTA{{ cardCount() !== 1 ? 'E' : '' }} RILEVATA{{
-              cardCount() !== 1 ? 'E' : ''
-            }}
-            — PREMI SCAN
-          } @else {
-            ◇&nbsp; PUNTA LA FOTOCAMERA SULLE CARTE
-          }
-        </span>
-      }
-    </div>
 
-    <!-- API results -->
-    @if (hasResults() && !previews()) {
-      <div class="results-strip">
-        @for (r of resultsEntries(); track r.idx) {
-          <div
-            class="result-card"
-            [style.border-left-color]="getPalette(r.idx).s"
-            [style.border-color]="getPalette(r.idx).s + '44'"
-          >
+    @if (previewUrl()) {
+      <div class="scan-result-area">
+        <img [src]="previewUrl()" class="preview-thumb" alt="Carta catturata" />
+
+        @if (scanning()) {
+          <div class="scan-analyzing">
+            <div class="spinner"></div>
+            <span>Analisi in corso...</span>
+          </div>
+        } @else if (result(); as r) {
+          <div class="result-card">
             <div class="result-card__name">{{ r.name }}</div>
             <div class="result-card__meta">
-              <span class="result-card__code" [style.color]="getPalette(r.idx).s">{{
-                r.cardCode
-              }}</span>
+              <span class="result-card__code">{{ r.cardCode }}</span>
               <span
                 class="result-card__rarity"
                 [style.color]="getRarityColor(r.rarity)"
                 [style.background]="getRarityColor(r.rarity) + '22'"
                 [style.border-color]="getRarityColor(r.rarity) + '55'"
-                >{{ r.rarity }}</span
-              >
+              >{{ r.rarity }}</span>
             </div>
             <div class="result-card__prices">
               <div>
                 <div class="result-card__price-label">EU MIN</div>
                 <div class="result-card__price-eu">
-                  {{ r.minEu != null ? '€ ' + r.minEu.toFixed(2) : '€ —' }}
+                  {{ r.minEu != null ? ('€ ' + r.minEu.toFixed(2)) : '€ —' }}
                 </div>
               </div>
               @if (r.minIta != null) {
@@ -131,169 +74,50 @@
               }
             </div>
             @if (r.cardtraderUrl) {
-              <a
-                [href]="r.cardtraderUrl"
-                target="_blank"
-                rel="noreferrer"
-                class="result-card__link"
-                [style.color]="getPalette(r.idx).s"
-              >
+              <a [href]="r.cardtraderUrl" target="_blank" rel="noreferrer" class="result-card__link">
                 ↗ CARDTRADER
               </a>
             }
           </div>
+        } @else if (error()) {
+          <div class="scan-error">{{ error() }}</div>
         }
       </div>
     }
 
-    <!-- Main buttons -->
-    @if (!previews()) {
-      <div class="main-actions">
-        @if (hasResults()) {
-          <button class="btn-reset" (click)="handleReset()">✕ RESET</button>
-        }
+    <div class="main-actions">
+      @if (hasResult() || error()) {
+        <button class="btn-reset" (click)="reset()">✕ NUOVA</button>
+      }
+      @if (!previewUrl() || hasResult() || error()) {
         <button
           class="btn-scan"
-          (click)="handlePreview()"
-          [disabled]="btnDisabled()"
-          [class.btn-scan--disabled]="btnDisabled()"
+          (click)="scan()"
+          [disabled]="!ready() || scanning()"
+          [class.btn-scan--disabled]="!ready() || scanning()"
         >
-          {{ !ready() ? '⟳  INIZIALIZZAZIONE...' : '⚡  SCAN CARDS' }}
+          {{ !ready() ? '⟳ INIZIALIZZAZIONE...' : '⚡ SCAN' }}
         </button>
-      </div>
-    }
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════════
-       PREVIEW PANEL
-  ══════════════════════════════════════════════════════════════ -->
-  @if (previews()) {
-    <div class="preview-panel">
-      <!-- Header -->
-      <div class="preview-panel__header">
-        <div>
-          <div class="preview-panel__title">ANTEPRIMA SCAN</div>
-          <div class="preview-panel__hint">
-            Verifica che le carte siano corrette · tocca per escludere
-          </div>
-        </div>
-        <button class="btn-cancel" (click)="closePreviews()">✕ ANNULLA</button>
-      </div>
-
-      <!-- Grid -->
-      <div class="preview-grid">
-        @for (p of previews()!; track p.idx) {
-          <div
-            class="preview-item"
-            [class.preview-item--excluded]="isExcluded(p.idx)"
-            (click)="toggleExclude(p.idx)"
-          >
-            <div
-              class="preview-item__frame"
-              [style.border-color]="
-                isExcluded(p.idx) ? 'rgba(255,255,255,0.1)' : getPalette(p.idx).s
-              "
-              [style.box-shadow]="
-                isExcluded(p.idx) ? 'none' : '0 0 14px ' + getPalette(p.idx).s + '44'
-              "
-            >
-              @if (p.dataUrl) {
-                <img [src]="p.dataUrl" [alt]="'Carta ' + (p.idx + 1)" class="preview-item__img" />
-              } @else {
-                <div class="preview-item__error">Errore</div>
-              }
-
-              <!-- Exclusion overlay -->
-              @if (isExcluded(p.idx)) {
-                <div class="preview-item__excl-overlay">✕</div>
-              }
-
-              <!-- Sending spinner -->
-              @if (scanning() && sendingIdx() === p.idx) {
-                <div class="preview-item__sending">
-                  <div class="spinner"></div>
-                </div>
-              }
-            </div>
-            <div
-              class="preview-item__label"
-              [style.color]="isExcluded(p.idx) ? 'rgba(255,255,255,0.25)' : getPalette(p.idx).s"
-            >
-              {{ isExcluded(p.idx) ? 'ESCLUSA' : 'CARTA ' + (p.idx + 1) }}
-            </div>
-          </div>
-        }
-      </div>
-
-      <!-- Footer -->
-      <div class="preview-panel__footer">
-        <div class="preview-panel__count-label">
-          @if (confirmCount() === 0) {
-            ⚠ Tutte le carte sono escluse
-          } @else {
-            {{ confirmCount() }} carta{{ confirmCount() !== 1 ? 'e' : '' }} da inviare ·
-            {{ excluded().size }} esclusa{{ excluded().size !== 1 ? 'e' : '' }}
-          }
-        </div>
-        <button
-          class="btn-confirm"
-          (click)="handleConfirmSend()"
-          [disabled]="scanning() || confirmCount() === 0"
-          [class.btn-confirm--disabled]="scanning() || confirmCount() === 0"
-        >
-          @if (scanning()) {
-            ⟳ INVIO CARTA {{ (sendingIdx() ?? 0) + 1 }} / {{ confirmCount() }}...
-          } @else {
-            ⚡ INVIA {{ confirmCount() }} CARTA{{ confirmCount() !== 1 ? 'E' : '' }} ALL'API
-          }
-        </button>
-      </div>
+      }
     </div>
-  }
+  </div>
 
   <!-- ── Loading screen ── -->
   @if (!ready() && !camError()) {
     <div class="loading-screen">
       <div class="loading-screen__icon">🏴‍☠️</div>
-      <div class="loading-screen__text">
+      <div>
         <div class="loading-screen__title">ONE PIECE SCANNER</div>
-        <div class="loading-screen__sub">INIZIALIZZAZIONE SISTEMA AR</div>
+        <div class="loading-screen__sub">AVVIO FOTOCAMERA...</div>
       </div>
-      <div class="load-items">
-        <div class="load-item">
-          <div class="load-item__dot" [class.load-item__dot--done]="camReady()">
-            {{ camReady() ? '✓' : '·' }}
-          </div>
-          <span [class.load-item__label--done]="camReady()" class="load-item__label"
-            >FOTOCAMERA</span
-          >
-          @if (!camReady()) {
-            <div class="spinner spinner--sm"></div>
-          }
-        </div>
-        <div class="load-item">
-          <div class="load-item__dot" [class.load-item__dot--done]="cvReady()">
-            {{ cvReady() ? '✓' : '·' }}
-          </div>
-          <span [class.load-item__label--done]="cvReady()" class="load-item__label"
-            >OPENCV.JS (~8 MB)</span
-          >
-          @if (!cvReady()) {
-            <div class="spinner spinner--sm"></div>
-          }
-        </div>
-      </div>
-      <div class="loading-bar">
-        <div class="loading-bar__fill" [style.width]="loadPct() + '%'"></div>
-      </div>
-      <div class="loading-pct">{{ loadPct() }}% — ATTENDERE...</div>
+      <div class="spinner"></div>
     </div>
   }
 
   <!-- ── Camera error ── -->
   @if (camError()) {
     <div class="cam-error-screen">
-      <div style="font-size: 56px">📷</div>
+      <div style="font-size: 52px">📷</div>
       <div class="cam-error-screen__title">ACCESSO FOTOCAMERA NEGATO</div>
       <div class="cam-error-screen__body">
         Concedi i permessi fotocamera nelle impostazioni del browser e ricarica la pagina.
@@ -301,4 +125,5 @@
       <button class="btn-retry" (click)="reload()">RIPROVA</button>
     </div>
   }
+
 </div>

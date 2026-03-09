@@ -66,13 +66,14 @@
   </div>
 
   <h2>Set movers</h2>
-
   <div class="o-product-list">
     @for (set of getTopMoversSet.value(); track set.expansionName) {
       <div class="m-product-card">
         <h4>{{ set?.expansionName }}</h4>
         <img
-          src="https://res.cloudinary.com/dntnvwjka/image/upload/{{ set?.idProduct }}_SMALL.jpg"
+          src="https://onepiece-images.s3.eu-north-1.amazonaws.com/images/{{
+            set?.idProduct
+          }}_SMALL.jpg"
           alt="{{ set?.expansionName }}"
         />
         <div class="m-cardInfo a-priceInfo">
