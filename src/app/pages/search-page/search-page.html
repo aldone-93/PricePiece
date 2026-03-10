@@ -9,54 +9,6 @@
       <input id="name" type="text" [formField]="searchForm.name" placeholder="Es: Luffy, Zoro..." />
     </div>
 
-    <div class="m-filter-group m-color-selector">
-      <label>Colore</label>
-      <div class="m-color-options">
-        @for (color of cardColors; track color.value) {
-          <button
-            type="button"
-            class="a-color-ball"
-            [class.selected]="isColorSelected(color.value)"
-            [style.background-color]="color.hex"
-            [title]="color.name"
-            (click)="toggleColor(color.value)"
-          >
-            @if (isColorSelected(color.value)) {
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            }
-          </button>
-        }
-      </div>
-    </div>
-
-    <div class="m-filter-group">
-      <label for="type">Tipo</label>
-      <input
-        id="type"
-        type="text"
-        [formField]="searchForm.type"
-        placeholder="Es: Leader, Character..."
-        list="type-options"
-      />
-      <datalist id="type-options">
-        @for (type of typesResource.value(); track type) {
-          <option [value]="type">{{ type }}</option>
-        }
-      </datalist>
-    </div>
-
     <div class="m-filter-group">
       <label for="expansion">Espansione</label>
       <app-set-selector
@@ -64,35 +16,90 @@
       ></app-set-selector>
     </div>
 
-    <div class="m-filter-group">
-      <label for="rarity">Rarità</label>
-      <select id="rarity" [formField]="searchForm.rarity" class="a-select">
-        <option value="">Tutte</option>
-        @for (rarity of rarities; track rarity) {
-          <option [value]="rarity">{{ rarity }}</option>
-        }
-      </select>
-    </div>
+    <!-- Toggle button visible only on mobile -->
+    <button class="btn-more-filters" (click)="filtersOpen.set(!filtersOpen())" type="button">
+      <span class="btn-more-filters__icon">{{ filtersOpen() ? '▲' : '▼' }}</span>
+      {{ filtersOpen() ? 'Meno filtri' : 'Altri filtri' }}
+    </button>
 
-    <div class="m-filter-group">
-      <label for="artist">Artista</label>
-      <input
-        id="artist"
-        type="text"
-        [formField]="searchForm.artist"
-        placeholder="Es: Eiichiro Oda..."
-        list="artist-options"
-      />
-      <datalist id="artist-options">
-        @for (artist of (artistsResource.value() ?? []); track artist) {
-          <option [value]="artist">{{ artist }}</option>
-        }
-      </datalist>
-    </div>
+    <!-- Secondary filters: always visible on desktop, collapsible on mobile -->
+    <div
+      class="m-search-filters__secondary"
+      [class.m-search-filters__secondary--open]="filtersOpen()"
+    >
+      <div class="m-filter-group m-color-selector">
+        <label>Colore</label>
+        <div class="m-color-options">
+          @for (color of cardColors; track color.value) {
+            <button
+              type="button"
+              class="a-color-ball"
+              [class.selected]="isColorSelected(color.value)"
+              [style.background-color]="color.hex"
+              [title]="color.name"
+              (click)="toggleColor(color.value)"
+            >
+              @if (isColorSelected(color.value)) {
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              }
+            </button>
+          }
+        </div>
+      </div>
 
-    <div class="m-filter-actions">
-      <button class="btn-primary">Cerca</button>
-      <button class="btn-secondary" (click)="clearFilters()">Reset</button>
+      <div class="m-filter-group">
+        <label for="type">Tipo</label>
+        <input
+          id="type"
+          type="text"
+          [formField]="searchForm.type"
+          placeholder="Es: Leader, Character..."
+          list="type-options"
+        />
+        <datalist id="type-options">
+          @for (type of typesResource.value(); track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </datalist>
+      </div>
+
+      <div class="m-filter-group">
+        <label for="rarity">Rarità</label>
+        <select id="rarity" [formField]="searchForm.rarity" class="a-select">
+          <option value="">Tutte</option>
+          @for (rarity of rarities; track rarity) {
+            <option [value]="rarity">{{ rarity }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="m-filter-group">
+        <label for="artist">Artista</label>
+        <input
+          id="artist"
+          type="text"
+          [formField]="searchForm.artist"
+          placeholder="Es: Eiichiro Oda..."
+          list="artist-options"
+        />
+        <datalist id="artist-options">
+          @for (artist of artistsResource.value() ?? []; track artist) {
+            <option [value]="artist">{{ artist }}</option>
+          }
+        </datalist>
+      </div>
     </div>
   </div>
 
@@ -106,15 +113,13 @@
       </div>
     } @else {
       <div class="m-results-grid">
-        @for (product of products(); track product.idProduct) {
+        @for (blueprint of products(); track blueprint.idProduct) {
           <app-product-card
-            (cardClick)="openSingleProductDialog(product)"
-            [id]="product.idProduct"
-            [name]="product.name"
-            [diff]="product.minEuDiff"
-            [minIta]="product.minIta"
-            [minEu]="product.minEu"
-            [ctrader_id]="product.ctrader_id"
+            (cardClick)="openSingleProductDialog(blueprint)"
+            [id]="blueprint.idProduct"
+            [name]="blueprint.name"
+            [minIta]="blueprint.product.minIta || blueprint.product.minPrice"
+            [minEu]="blueprint.product.minPrice"
           ></app-product-card>
         }
       </div>

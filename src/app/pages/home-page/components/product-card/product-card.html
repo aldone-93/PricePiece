@@ -2,7 +2,7 @@
   <h4>{{ name() }}</h4>
   <div class="o-cardImage">
     <div class="m-priceInfo">
-      @let sign = diff() !== 0 ? (diff() >= 0 ? 'positive' : 'negative') : '';
+      @let sign = (diff() ?? 0) !== 0 ? ((diff() ?? 0) >= 0 ? 'positive' : 'negative') : '';
       <div class="a-prices">
         <a
           href="https://www.cardmarket.com/en/OnePiece/Products?idProduct={{ id() }}"
@@ -27,16 +27,18 @@
       alt="{{ name() }}"
     />
   </div>
-  <div class="m-cardInfo">
-    <div class="a-links">
-      <p [ngClass]="sign">{{ diff() | number: '1.0-2' }}%</p>
-      <a
-        href="https://www.cardtrader.com/en/cards/{{ ctrader_id() }}"
-        target="_blank"
-        (click)="$event.stopPropagation()"
-      >
-        CardTrader
-      </a>
+  @if (diff() && ctrader_id()) {
+    <div class="m-cardInfo">
+      <div class="a-links">
+        <p [ngClass]="sign">{{ diff() | number: '1.0-2' }}%</p>
+        <a
+          href="https://www.cardtrader.com/en/cards/{{ ctrader_id() }}"
+          target="_blank"
+          (click)="$event.stopPropagation()"
+        >
+          CardTrader
+        </a>
+      </div>
     </div>
-  </div>
+  }
 </div>

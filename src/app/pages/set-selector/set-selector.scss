@@ -31,8 +31,10 @@
   }
 
   &.selected {
-    background: var(--accent-purple, #7c3aed);
-    border-color: var(--accent-purple, #7c3aed);
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+    color: #fff;
+    font-weight: 600;
   }
 }
 
@@ -60,14 +62,12 @@
 
 .a-expansion-item {
   padding: 6px 10px;
-  border: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
   background: transparent;
   color: var(--text-primary, #fff);
   cursor: pointer;
-  border-radius: 4px;
-  transition:
-    background 0.15s,
-    color 0.15s;
+  transition: background 0.15s;
 
   &:hover {
     background: var(--bg-tertiary, #2a2a2a);
@@ -75,8 +75,10 @@
   }
 
   &.selected {
-    background: var(--accent-purple, #7c3aed);
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
     color: #fff;
+    font-weight: 600;
   }
 }
 

@@ -41,6 +41,7 @@ export class HomePage {
   private readonly productService = inject(Products);
 
   selectedProduct = signal<CardInfo | undefined>(undefined);
+  filtersOpen = signal(false);
 
   page = signal(1);
   pageSize = 50;

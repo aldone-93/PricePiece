@@ -10,7 +10,7 @@ import { Component, input, output } from '@angular/core';
 export class ProductCard {
   id = input.required<number>();
   name = input.required<string>();
-  diff = input.required<number>();
+  diff = input<number>();
   minIta = input<number>();
   minEu = input<number>();
   ctrader_id = input<number>();

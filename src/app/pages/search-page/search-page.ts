@@ -52,6 +52,7 @@ export class SearchPage {
 
   // Filtri di ricerca
   selectedProduct = signal<CardInfo | undefined>(undefined);
+  filtersOpen = signal(false);
 
   // Form fields
   formData = signal<formData>({

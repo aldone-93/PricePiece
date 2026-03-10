@@ -100,7 +100,6 @@ export class ImageSearch implements OnInit, AfterViewInit, OnDestroy {
       .catch(() => this.camError.set(true));
   }
 
-
   // ── Capture viewfinder region ─────────────────────────────────────
   private captureViewfinder(): HTMLCanvasElement {
     const video = this.videoRef.nativeElement;
@@ -134,9 +133,11 @@ export class ImageSearch implements OnInit, AfterViewInit, OnDestroy {
   // ── Scan ──────────────────────────────────────────────────────────
   async scan() {
     if (!this.ready() || this.scanning()) return;
-    this.scanning.set(true);
-    this.error.set(null);
+    // Reset previous result so UI is clean before new capture
     this.result.set(null);
+    this.error.set(null);
+    this.previewUrl.set(null);
+    this.scanning.set(true);
 
     const canvas = this.captureViewfinder();
     this.previewUrl.set(canvas.toDataURL('image/jpeg', 0.92));

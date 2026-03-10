@@ -2,23 +2,25 @@
   <!-- Video fullscreen background -->
   <video #videoEl autoplay playsinline muted class="scanner-video"></video>
 
-  <!-- ── Viewfinder overlay ── -->
-  @if (ready() && !previewUrl()) {
-    <div class="vf-overlay">
+  <!-- ── Viewfinder overlay — always in DOM so ViewChild ref stays valid ── -->
+  @if (ready()) {
+    <div class="vf-overlay" [class.vf-overlay--hidden]="scanning() && previewUrl()">
       <div #viewfinderEl class="viewfinder">
         <div class="vf-corner vf-tl"></div>
         <div class="vf-corner vf-tr"></div>
         <div class="vf-corner vf-bl"></div>
         <div class="vf-corner vf-br"></div>
-        <div class="vf-scanline"></div>
+        @if (!previewUrl()) {
+          <div class="vf-scanline"></div>
+        }
       </div>
       <p class="vf-hint">Inquadra la carta nel riquadro</p>
     </div>
   }
 
-  <!-- ── Bottom HUD ── -->
-  <div class="bottom-hud">
-    @if (previewUrl()) {
+  <!-- ── Result overlay (shows on top of live camera) ── -->
+  @if (previewUrl()) {
+    <div class="result-overlay">
       <div class="scan-result-area">
         <img [src]="previewUrl()" class="preview-thumb" alt="Carta catturata" />
 
@@ -69,22 +71,27 @@
           <div class="scan-error">{{ error() }}</div>
         }
       </div>
-    }
+    </div>
+  }
 
+  <!-- ── Bottom HUD ── -->
+  <div class="bottom-hud">
     <div class="main-actions">
-      @if (hasResult() || error()) {
-        <button class="btn-reset" (click)="reset()">✕ NUOVA</button>
-      }
-      @if (!previewUrl() || hasResult() || error()) {
-        <button
-          class="btn-scan"
-          (click)="scan()"
-          [disabled]="!ready() || scanning()"
-          [class.btn-scan--disabled]="!ready() || scanning()"
-        >
-          {{ !ready() ? '⟳ INIZIALIZZAZIONE...' : '⚡ SCAN' }}
-        </button>
-      }
+      <button
+        class="btn-scan"
+        (click)="scan()"
+        [disabled]="!ready() || scanning()"
+        [class.btn-scan--disabled]="!ready() || scanning()"
+      >
+        @if (!ready()) {
+          ⟳ INIZIALIZZAZIONE...
+        } @else if (scanning()) {
+          <div class="spinner spinner--inline"></div>
+          ANALISI...
+        } @else {
+          ⚡ SCAN
+        }
+      </button>
     </div>
   </div>
 

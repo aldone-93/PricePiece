@@ -16,6 +16,7 @@ export type CardInfo = {
   idCategory: number;
   idExpansion: number;
   idMetacard: number;
+  product: any;
   name: string;
   minEu: number;
   cardCode: string;

@@ -33,6 +33,59 @@
   grid-template-columns: repeat(4, auto);
   box-shadow: 4px 2px 4px gainsboro;
   gap: 16px;
+
+  // Secondary filters always inline on desktop
+  .o-filters__secondary {
+    display: contents;
+  }
+
+  // Toggle button hidden on desktop
+  .btn-more-filters {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr 1fr;
+    padding: 12px 16px;
+
+    // Toggle button visible on mobile
+    .btn-more-filters {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      grid-column: 1 / -1;
+      background: var(--bg-secondary);
+      border: 1px solid var(--bg-tertiary);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      padding: 8px 14px;
+      cursor: pointer;
+      width: fit-content;
+      transition: background 0.2s;
+
+      &:hover {
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+      }
+    }
+
+    // Secondary filters hidden by default, shown when open
+    .o-filters__secondary {
+      display: none;
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+
+      mat-form-field {
+        width: 100%;
+      }
+
+      &--open {
+        display: grid;
+      }
+    }
+  }
 }
 .m-cardInfo {
   display: grid;

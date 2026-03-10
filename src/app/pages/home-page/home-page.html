@@ -10,21 +10,31 @@
       }
     </mat-select>
   </mat-form-field>
-  <mat-form-field>
-    <mat-label>Min</mat-label>
-    <input matInput type="number" placeholder="Min price..." [formField]="filtersForm.minPrice" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Max</mat-label>
-    <input matInput type="number" placeholder="Max price..." [formField]="filtersForm.maxPrice" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Delta</mat-label>
-    <mat-select [formField]="filtersForm.sort" placeholder="Select delta...">
-      <mat-option [value]="'minEuDiff'"> Variazione prezzo minimo</mat-option>
-      <mat-option [value]="'minEu'"> Prezzo</mat-option>
-    </mat-select>
-  </mat-form-field>
+
+  <!-- Toggle button visible only on mobile -->
+  <button class="btn-more-filters" (click)="filtersOpen.set(!filtersOpen())" type="button">
+    <mat-icon>{{ filtersOpen() ? 'expand_less' : 'tune' }}</mat-icon>
+    {{ filtersOpen() ? 'Meno filtri' : 'Altri filtri' }}
+  </button>
+
+  <!-- Secondary filters: always visible on desktop, collapsible on mobile -->
+  <div class="o-filters__secondary" [class.o-filters__secondary--open]="filtersOpen()">
+    <mat-form-field>
+      <mat-label>Min</mat-label>
+      <input matInput type="number" placeholder="Min price..." [formField]="filtersForm.minPrice" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Max</mat-label>
+      <input matInput type="number" placeholder="Max price..." [formField]="filtersForm.maxPrice" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Delta</mat-label>
+      <mat-select [formField]="filtersForm.sort" placeholder="Select delta...">
+        <mat-option [value]="'minEuDiff'"> Variazione prezzo minimo</mat-option>
+        <mat-option [value]="'minEu'"> Prezzo</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>
 <div class="o-content">
   <h2>Singles Top Movers</h2>
