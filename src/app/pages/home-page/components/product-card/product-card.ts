@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-product-card',
@@ -16,6 +16,8 @@ export class ProductCard {
   ctrader_id = input<number>();
 
   cardClick = output<void>();
+
+  imageLoaded = signal(false);
 
   onCardClick() {
     this.cardClick.emit();

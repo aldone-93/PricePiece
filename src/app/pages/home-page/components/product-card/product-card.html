@@ -22,12 +22,20 @@
         <img src="assets/icons/cardmarket.svg" />
       </div>
     </div>
-    <img
-      src="https://onepiece-images.s3.eu-north-1.amazonaws.com/images/{{ id() }}_SMALL.jpg"
-      alt="{{ name() }}"
-    />
+
+    @defer (on viewport) {
+      <img
+        [class.visible]="imageLoaded()"
+        (load)="imageLoaded.set(true)"
+        src="https://onepiece-images.s3.eu-north-1.amazonaws.com/images/{{ id() }}_SMALL.jpg"
+        alt="{{ name() }}"
+        (error)="$event.target.src = 'assets/images/back.png'"
+      />
+    } @placeholder {
+      <img src="assets/images/back.png" />
+    }
   </div>
-  @if (diff() && ctrader_id()) {
+  @if (diff()) {
     <div class="m-cardInfo">
       <div class="a-links">
         <p [ngClass]="sign">{{ diff() | number: '1.0-2' }}%</p>

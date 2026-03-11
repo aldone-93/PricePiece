@@ -1,8 +1,4 @@
 <div class="o-search-container">
-  <div class="m-search-header">
-    <h1>🔍 Ricerca Carte</h1>
-  </div>
-
   <div class="m-search-filters">
     <div class="m-filter-group">
       <label for="name">Nome</label>
@@ -77,12 +73,18 @@
 
       <div class="m-filter-group">
         <label for="rarity">Rarità</label>
-        <select id="rarity" [formField]="searchForm.rarity" class="a-select">
-          <option value="">Tutte</option>
+        <input
+          id="rarity"
+          type="text"
+          [formField]="searchForm.rarity"
+          placeholder="Es: Rare, Common..."
+          list="rarity-options"
+        />
+        <datalist id="rarity-options">
           @for (rarity of rarities; track rarity) {
             <option [value]="rarity">{{ rarity }}</option>
           }
-        </select>
+        </datalist>
       </div>
 
       <div class="m-filter-group">
@@ -100,6 +102,44 @@
           }
         </datalist>
       </div>
+
+      <div class="m-filter-group">
+        <label for="orderBy">Ordina per</label>
+        <input
+          id="orderBy"
+          type="text"
+          [formField]="searchForm.orderBy"
+          placeholder="Es: Nome, Rarità..."
+          list="orderby-options"
+        />
+        <datalist id="orderby-options">
+          @for (field of orderFields; track field.value) {
+            <option [value]="field.value">{{ field.label }}</option>
+          }
+        </datalist>
+      </div>
+
+      @if (searchForm.orderBy().value()) {
+        <div class="m-filter-group">
+          <label>Direzione</label>
+          <div class="o-order-dir">
+            <button
+              type="button"
+              [class.active]="searchForm.orderDir().value() === 'asc'"
+              (click)="searchForm.orderDir().setControlValue('asc')"
+            >
+              ↑ ASC
+            </button>
+            <button
+              type="button"
+              [class.active]="searchForm.orderDir().value() === 'desc'"
+              (click)="searchForm.orderDir().setControlValue('desc')"
+            >
+              ↓ DESC
+            </button>
+          </div>
+        </div>
+      }
     </div>
   </div>
 
@@ -117,9 +157,9 @@
           <app-product-card
             (cardClick)="openSingleProductDialog(blueprint)"
             [id]="blueprint.idProduct"
-            [name]="blueprint.name"
-            [minIta]="blueprint.product.minIta || blueprint.product.minPrice"
-            [minEu]="blueprint.product.minPrice"
+            [name]="blueprint.productName"
+            [minIta]="blueprint.product[0].minIta || blueprint.product[0].minPrice"
+            [minEu]="blueprint.product[0].minPrice"
           ></app-product-card>
         }
       </div>

@@ -61,7 +61,17 @@ export class Products {
   }
 
   getProductsWithBlueprintsRaw(body?: ProductBodyRequest) {
-    return this.httpClient.get<ProductResponse>(environment.API_URL + 'productsWithBlueprint', {
+    return this.httpClient.get<{
+      data: any[];
+      pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+        hasNext: boolean;
+        hasPrev: boolean;
+      };
+    }>(environment.API_URL + 'productsWithBlueprint', {
       params: { ...body },
     });
   }

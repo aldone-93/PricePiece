@@ -16,6 +16,7 @@ export type CardInfo = {
   idCategory: number;
   idExpansion: number;
   idMetacard: number;
+
   product: any;
   name: string;
   minEu: number;
@@ -25,7 +26,7 @@ export type CardInfo = {
   minItaDiff: number;
   tcg_player_id: number;
   ctrader_id: number;
-  cardtrader_url: string;
+  cardtrader_url: number;
   minUpdatedAt: string;
   minPrice: number;
   fixedProperty: {

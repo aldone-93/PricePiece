@@ -21,6 +21,8 @@ interface formData {
   expansion: string;
   rarity: string;
   artist: string;
+  orderBy: string;
+  orderDir: 'asc' | 'desc';
 }
 
 @Component({
@@ -48,7 +50,41 @@ export class SearchPage {
   cardColors = CARD_COLORS;
 
   // Rarità disponibili
-  rarities = ['Leader', 'Common', 'Uncommon', 'Rare', 'Super Rare', 'Secret Rare', 'Promo'];
+  rarities = [
+    'Leader',
+    'Common',
+    'Uncommon',
+    'Rare',
+    'Super Rare',
+    'Secret Rare',
+    'Promo',
+    'Serial',
+    'Participation Version',
+    'Manga Art',
+    'Pre-Release',
+    '1st Anniversary',
+    'Jolly Roger Foil',
+    'Finalist Version',
+    'Treasure Rare',
+    'Top Player Version',
+    'Winner Version',
+    'Special Card',
+    'Judge',
+    'Alternate Art',
+    'Reprint',
+    'Treasure Cup',
+    'Textured Foil',
+    'Demo Version',
+    'Full Art',
+  ];
+
+  orderFields = [
+    { label: 'Nome', value: 'name' },
+    { label: 'Espansione', value: 'expansion' },
+    { label: 'Rarità', value: 'rarity' },
+    { label: 'Prezzo Min ITA', value: 'minIta' },
+    { label: 'Prezzo Min EU', value: 'minPrice' },
+  ];
 
   // Filtri di ricerca
   selectedProduct = signal<CardInfo | undefined>(undefined);
@@ -62,6 +98,8 @@ export class SearchPage {
     expansion: '',
     rarity: '',
     artist: '',
+    orderBy: '',
+    orderDir: 'asc',
   });
 
   searchForm = form(this.formData, (schema) => {
@@ -98,8 +136,7 @@ export class SearchPage {
   // Resource per caricare i prodotti
   searchResults = rxResource({
     params: () => ({ ...this.formData(), page: this.currentPage() }),
-    stream: ({ params }) =>
-      this.productsService.getProductsWithBlueprintsRaw(params as ProductBodyRequest),
+    stream: ({ params }) => this.productsService.getProductsWithBlueprintsRaw(params),
   });
 
   pagination = computed(() => this.searchResults.value()?.pagination);
@@ -129,6 +166,8 @@ export class SearchPage {
       expansion: '',
       rarity: '',
       artist: '',
+      orderBy: '',
+      orderDir: 'asc',
     });
 
     this.router.navigate([], {

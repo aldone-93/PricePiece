@@ -2,15 +2,15 @@
   display: flex;
   gap: 8px;
   align-items: center;
+  position: relative;
 }
 
 .m-group {
-  position: relative;
-
   &:hover .m-dropdown {
     opacity: 1;
     pointer-events: all;
     transform: translateY(0);
+    z-index: 1000;
   }
 }
 
@@ -41,10 +41,8 @@
 .m-dropdown {
   position: absolute;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
   left: 0;
-  min-width: 120px;
-  max-height: 260px;
+  grid-template-columns: repeat(3, 1fr);
   overflow: auto;
   background: var(--bg-secondary, #1e1e1e);
   border: 1px solid var(--bg-tertiary, #333);

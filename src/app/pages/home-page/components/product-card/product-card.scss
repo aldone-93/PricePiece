@@ -3,15 +3,8 @@
   cursor: pointer;
 }
 
-.m-cardInfo {
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-template-columns: 3fr 1fr;
-  gap: 8px;
-}
-
 .m-product-card {
-  width: 200px;
+  width: 100%;
   border-radius: 1rem;
   height: min-content;
   padding: 16px;
@@ -30,7 +23,8 @@
 }
 .a-links {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
   color: var(--text-primary);
 }
 
@@ -81,6 +75,15 @@ p.negative {
     object-fit: cover;
     display: block;
     border-radius: 0.5rem;
+  }
+}
+
+img {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+
+  &.visible {
+    opacity: 1;
   }
 }
 
