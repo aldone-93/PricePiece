@@ -8,6 +8,11 @@
   white-space: nowrap;
   gap: 18px;
   min-height: 350px; /* Altezza fissa per evitare il flick */
+
+  app-product-card {
+    flex: 1 1 0;
+    min-width: 0;
+  }
 }
 @media (max-width: 1200px) {
   .o-product-list {
@@ -103,7 +108,8 @@
   display: flex;
   gap: 16px;
   flex-direction: column;
-  flex: none;
+  flex: 1 1 0;
+  min-width: 200px;
   h4 {
     overflow: hidden;
     white-space: nowrap;

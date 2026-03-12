@@ -98,6 +98,7 @@ export class SingleProductDialog {
           {
             label: 'CardMarket',
             data: priceData,
+            pointStyle: false,
           },
         ],
       },
@@ -106,6 +107,13 @@ export class SingleProductDialog {
         plugins: {
           legend: {
             display: false,
+          },
+        },
+        scales: {
+          y: {
+            ticks: {
+              precision: 2, // numero di decimali da mostrare
+            },
           },
         },
       },
